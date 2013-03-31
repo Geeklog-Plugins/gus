@@ -1,0 +1,39 @@
+<table cellspacing="0" cellpadding="5">
+<tr style="text-align: right;" class=header>
+	<td>{month_title}</td>
+	<td>{anon_title}</td>
+	<td>{reg_title}</td>
+	<td>{page_title}</td>
+	<td>{story_title}</td>
+	<td>{comm_title}</td>
+	<td>{link_title}</td>
+	<td>{hour_title}</td>
+	<td>{referer_title}</td>
+	<td>{country_title}</td>
+</tr>
+<!-- BEGIN MONTH -->
+<tr style="text-align: right;" class={rowclass}>
+	<td nowrap><a href="{site_url}/{stats_name}/daily.php?month={month}&amp;year={year}">{display_month}</a></td>
+	<td>{anon}</td>
+	<td>{reg}</td>
+	<td>{pages}</td>
+	<td><a href="{site_url}/{stats_name}/stories.php?year={year}&amp;month={month}">{stories}</a></td>
+	<td><a href="{site_url}/{stats_name}/comments.php?year={year}&amp;month={month}">{comments}</a></td>
+	<td>{linksf}</td>
+	<td><a href="{site_url}/{stats_name}/hour.php?year={year}&amp;month={month}">{byhour}</a></td>
+	<td><a href="{site_url}/{stats_name}/refs.php?year={year}&amp;month={month}">{referer}</a></td>
+	<td><a href="{site_url}/{stats_name}/country.php?year={year}&amp;month={month}">{country}</a></td>
+</tr>
+<!-- END MONTH -->
+<tr class=totals>
+	<td>{display_month}</td>
+	<td>{anon}</td><td>{reg}</td>
+	<td>{pages}</td>
+	<td>{stories}</td>
+	<td>{comments}</td>
+	<td>{linksf}</td>
+	<td>{byhour}</td>
+	<td>{referer}</td>
+	<td>{country}</td>
+</tr>
+</table>

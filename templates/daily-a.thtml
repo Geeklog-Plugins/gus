@@ -1,0 +1,30 @@
+<table cellspacing="0" cellpadding="5">
+<tr style="text-align: right;" class=header>
+	<td>{period_title}</td>
+	<td>{anon_title}</td>
+	<td>{reg_title}</td>
+	<td>{page_title}</td>
+	<td>{story_title}</td>
+	<td>{comm_title}</td>
+	<td>{link_title}</td>
+</tr>
+<!-- BEGIN ROW -->
+<tr style="text-align: right;" class={rowclass}>
+	<td nowrap>{day_display}</td>
+	<td>{anon}</td>
+	<td>{reg}</td>
+	<td>{pages}</td>
+	<td><a href="{site_url}/{stats_name}/stories.php?month={mon}&amp;year={year}&amp;day={day}">{stories}</a></td>
+	<td><a href="{site_url}/{stats_name}/comments.php?month={mon}&amp;year={year}&amp;day={day}">{comments}</a></td>
+	<td>{linksf}</td>
+</tr>
+<!-- END ROW -->
+<tr class=totals>
+	<td>{period}</td>
+	<td>{anon}</td><td>{reg}</td>
+	<td>{pages}</td>
+	<td>{stories}</td>
+	<td>{comments}</td>
+	<td>{linksf}</td>
+</tr>
+</table>

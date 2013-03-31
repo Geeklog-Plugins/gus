@@ -1,0 +1,401 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Geeklog Usage Stats Plugin</title>
+	<style type="text/css">
+		h2 { color: #FFCC00; background-color: #57658D; width: 100%; padding: 4px; }
+		h3 { color: #FFCC00; background-color: #57658D; width: 100%; padding: 4px; }
+		A:active { color: #00C; text-decoration: none; }
+		A:visited { color: #00C; }
+		A:hover { color: #00C; background-color: #FFCC00; }
+		A.target {}
+		.warn { color: red; font-weight: bold; }
+		A.warn { text-decoration: none; }
+		code, pre { font-family: monaco, monospace; font-size: 10px; }
+		div.codebox { background-color: #DFDBFF; border: 1px solid #57658D; padding: 5px; margin: 15px 15px 15px 15px; }
+		.question { font-weight: bold; padding: 5px 10px; }
+		.answer { padding: 5px 20px; }
+		.new { font-weight: bold; color: green; font-size: small; }
+		.fix { font-weight: bold; color: maroon; font-size: small; }
+		.security { color: red; font-weight: bold; font-size: small; }
+		.thanks { font-size: small; }
+		.conf_option { color: purple; font-size: small; }
+	</style>
+</head>
+<body bgcolor="#ffffff">
+
+<h2>Geeklog Usage Stats Plugin [v1.7.0]</h2>
+by Andy Maloney [<a href="mailto://imol00@gmail.com">imol00@gmail.com</a>]<br>
+09 Apr 2006
+
+<h3>Table of Contents</h3>
+
+<ul>
+	<li><a href="#description">Description</a></li>
+	<li><a href="#version">Version History</a></li>
+	<li><a href="#thanks">Thanks!</a></li>
+	<li><a href="#install">Installing The Plugin</a></li>
+	<li><a href="#config">Configuring The Plugin</a></li>
+	<li><a href="#import">Importing Data From Stats</a></li>
+	<li><a href="#upgrade">Upgrading The Plugin</a></li>
+	<li><a href="#remove">Removing The Plugin</a></li>
+	<li><a href="#you">Things You Can Do</a></li>
+	<li><a href="#license">License</a></li>
+</ul>
+
+<a name=description></a><h3>Description</h3>
+
+<p>The Geeklog Usage Stats [GUS] plugin collects statistics on who visits your site, what browser and operating system
+they are using, which pages they view, and which links they are clicking to get there.  It allows the administrator
+to browse these stats through a series of tables, getting right down into the data.  It is based on the
+venerable <a href="http://www.pigstye.net/gplugs/">stats plugin</a> v1.3
+by Tom Willett and John Hughes.  Some of this documentation is based on their work as well.  I was using
+the stats plugin for a long time and eventually decided it needed some cleanup and
+updating to work with the latest version of geeklog.  Tom mentioned he wasn't going to continue supporting it, so I
+thought I'd make a few changes myself and release them.  I figured this was going to be a quick week's work - <i>wrong</i>!
+As I got into it, I found I wanted to fix this and... oh <i>that</i> while I'm here, and optimise <i>this</i>
+a bit... oh and tweak <i>that</i>... 
+Eventually I decided to do a major overhaul.
+
+<h4>Differences Between GUS and 'Stats'</h4>
+<p>I made the following changes to the database:
+
+<ul>
+	<li>moved user agents to their own table</li>
+	<li>use the SQL date and time formats</li>
+	<li>removed redundant fields</li>
+</ul>
+
+I also changed the name of the plugin from 'stats' to 'gus', eliminated the
+'name the plugin whatever you want' functionality, put all the documentation in this readme,
+added the ability to import stats from the stats plugin, and changed the installation/upgrade mechanism. 
+I probably did some other things here and there too...
+
+<p>The changes to the database will improve performance and require less space.  I don't have any
+real statistics on this, but from the feedback I got from the testers, it reduces databases to less than
+half their size and is noticeably faster when browsing the stats.
+
+<p>Since the initial changes to the stats plugin, <i>many</i> other features and tweaks have been added to GUS.
+
+<h4>Developed Using These Tools</h4>
+<ul>
+	<li>Geeklog 1.3.11 &amp; Geeklog 1.4</li>
+	<li>PHP 5.0.4 [works under 4.3 or greater]</li>
+	<li>MySQL 4.1.16 [works in 4.0.x or greater - some users have reported that it works under 3.23]</li>
+	<li>FireFox 1.5.0.1</li>
+	<li>MacOS X 10.4.6</li>
+</ul>
+
+If you find GUS useful for monitoring and managing your site, please consider making a donation to support development.
+How about the price of a <b>pizza</b> or even just <b>a beer</b>?  Check out the <a href="#you">Things You Can Do</a> section.
+
+<a name=version></a><h3>Version History</h3>
+<ul>
+	<li>v1.7.0 [09 Apr 2006]<ul>
+		<li><span class=fix>[fix]</span> fix paging when register_globals is off</li>
+		<li><span class=fix>[fix]</span> fix several other issues when register_globals is off <span class=thanks>[thanks Randall Hand]</span></li>
+		<li><span class=fix>[fix]</span> removes temporary tables created if MySQL TEMPORARY is not used</li>
+		<li><span class=new>[new]</span> if you are using phpbbbridge, GUS will display [most] topic and forum names</li>
+		<li><span class=new>[new]</span> if you are using easyfile, GUS will display file names for downloads</li>
+		<li><span class=new>[new]</span> made day.php more concise <span class=thanks>[based on suggestions by Adrian Crook]</span></li>
+		<li><span class=new>[new]</span> added config option for hiding referrers in day.php <span class=thanks>[suggested and financed by Adrian Crook]</span>
+		<ul>
+			<li>controlled by the <span class=conf_option>$_GUS_CONF['hide_in_day_summary']</span> option in config.php</li>
+			<li>set an array of referrers which should be hidden when displaying day.php</li>
+			<li>the data is still collected, it is just hidden in the day summary</li>
+		</ul></li> 
+		<li><span class=new>[new]</span> added a similar config option for hiding referrers in the Who's Online block</span>
+		<ul>
+			<li>controlled by the <span class=conf_option>$_GUS_CONF['wo_hide_referrers']</span> option in config.php</li>
+		</ul></li> 
+</li>
+	</ul></li>
+	
+	<li>v1.6.0 [29 Jan 2006]<ul>
+		<li><span class=fix>[fix]</span> save on an SQL query if there is no referrer</li> 
+		<li><span class=fix>[fix]</span> eliminate some warnings and a few minor buglets</li> 
+		<li><span class=new>[new]</span> now installs and works with register_globals off</li>
+		<li><span class=new>[new]</span> changed the browser stats to make them more useful by breaking it down by browser and then version</li> 
+		<li><span class=new>[new]</span> optionally show bots by name [Google, Yahoo!, Ask Jeeves, Inktomi, and MSN Bot] in the Who's Online block instead of showing them as Guests <span class=thanks>[based on code by ByteEnabled]</span>
+		<ul>
+			<li>controlled by the <span class=conf_option>$_GUS_CONF['wo_show_bots']</span> option in config.php</li>
+		</ul></li> 
+	</ul></li>
+
+	<li>v1.5.0 [13 Oct 2005]<ul>
+		<li><span class=security>[security fix]</span> fixed a problem which might allow non-authorised users to view some stats pages</li>
+		<li><span class=fix>[fix]</span> if you had a file outside the document root which included lib-common.php, the path would not be correct when the stats were entered in the database [introduced in 1.4]</li> 
+		<li><span class=fix>[fix]</span> if your $CONF['site_url'] was 'http://foo.com' and someone arrived via 'http://www.foo.com', then 'foo.com' would show up as a referrer in the Who's Online block</li> 
+		<li><span class=fix>[fix]</span> sorting columns on today's stats was broken <span class=thanks>[reported by Adrian Crook]</span></li> 
+		<li><span class=new>[new]</span> added new config option <span class=conf_option>$_GUS_CONF['allow_ignore_anonymous']</span> to optimise a bit if you do not need the ability to ignore the user 'Anonymous'</li> 
+		<li><span class=new>[new]</span> added filtering of referrers <span class=thanks>[suggested and financed by Adrian Crook]</span></li> 
+		<li><span class=new>[new]</span> added some more navigation options to some pages [required a change to the header.thtml template file, so if you've changed yours, look at this]</li> 
+	</ul></li>
+	
+	<li>v1.4.0 [14 Sep 2005]<ul>
+		<li><span class=new>[new]</span> new interface for the admin page [uses Javascript]<ul>
+			<li>if Javascript is disabled it will still work - it's just not as nice and may produce quite a long page</li>
+		</ul></li> 
+		<li><span class=new>[new]</span> added filtering of user agent strings [including wildcards]</li> 
+		<li><span class=new>[new]</span> added filtering of host names [including wildcards]</li> 
+		<li><span class=new>[new]</span> IP address, user, and page filtering now allow wildcards<ul>
+			<li>if you were using addresses such as '123.0.1.' to block a range, GUS will update your tables to the new format ['123.0.1.%'] automatically</li>
+			<li>GUS uses MySQL's <a href="http://dev.mysql.com/doc/mysql/en/string-comparison-functions.html">LIKE</a> syntax for matching</li>
+		</ul></li> 
+		<li><span class=new>[new]</span> changed host name lookup to be more flexible<ul>
+			<li>replaced config option <span class=conf_option>$_GUS_CONF['use_nslookup']</span> with <span class=conf_option>$_GUS_CONF['host_lookup']</span> which can be either 'host', 'nslookup', or 'gethostbyaddr'</li>
+			<li>if your system is set up such that you cannot execute shell commands, you can use the built-in gethostbyaddr() function again</li>
+		</ul></li> 
+		<li><span class=new>[new]</span> added new config option <span class=conf_option>$_GUS_CONF['SQL_use_TEMPORARY']</span><ul>
+			<li>if you know your installation of MySQL does not allow the use of TEMPORARY tables, then set this to false for a slight optimisation</li>
+			<li>if you don't know what I'm talking about, then just leave it and everything will still work fine</li>
+		</ul></li>
+		<li><span class=new>[new]</span> added new config options <span class=conf_option>$_GUS_CONF['show_left_blocks']</span> and <span class=conf_option>$_GUS_CONF['show_right_blocks']</span> to control the visibility of left and right blocks when viewing GUS pages</li> 
+		<li><span class=new>[new]</span> more info in tables showing 'Page/Title/URL'<ul>
+			<li>searches using the <a href="http://imol.gotdns.com/staticpages/index.php?page=Andy-Maloney-Geeklog-Software">amz plugin</a> will now show the keyword used in the search</li>
+			<li><a href="http://gallery.sf.net">gallery 1.x</a> album titles and photo names will now be shown</li>
+			<li>user name for profile links will now be shown</li>
+		</ul></li>
+		<li><span class=new>[new]</span> removed extra path from page names<ul>
+			<li>if you had a site located at 'http://foo.bar.com/something/blat/', then all the pages in the database would start with 'something/blat/...'</li>
+			<li>this is a waste of space [screen and db], so it's outta there</li>
+			<li>this also speeds up the creation of the page columns by eliminating the need for some regular expression matches</li>
+			<li>the updater will automatically fix the entries already in the database</li>
+		</ul></li> 
+		<li><span class=fix>[fix]</span> when importing from the stats plugin, the data would not be updated to the current GUS format correctly<ul>
+			<li>if you imported your stats before version 1.3.0, then it's not an issue</li>
+			<li>if you did it after 1.3.0, then everything will still work, you just won't have the breakout of Windows versions for old data</li>
+		</ul></li>
+	</ul></li>
+	
+	<li>v1.3.3 [29 Jul 2005]<ul>
+		<li><span class=fix>[fix]</span> error on IP page when using MySQL 3.x
+			<span class=thanks>[reported by Ajay]</span></li> 
+	</ul></li>
+	
+	<li>v1.3.2 [25 Jul 2005]<ul>
+		<li><span class=fix>[fix]</span> query strings were being ignored [bug introduced in 1.3.0]</li> 
+	</ul></li>
+	
+	<li>v1.3.1 [22 Jul 2005]<ul>
+		<li><span class=fix>[fix]</span> installation failed on MySQL &lt; 4.1.0 
+			<span class=thanks>[reported by Curly]</span></li>
+		<li><span class=new>[new]</span> update the user agents table<ul>
+			<li> reflect the better detection of Windows varients from 1.3.0 [i.e. change all occurrences of 'Windows NT 5.0' to 'Windows 2000', 'Windows NT 5.1' to 'Windows XP', etc.]</li>
+			<li> recognise Windows Vista</li>
+			<li> add WebTV, SymbianOS, and some bot detection</li>
+		</ul></li>
+	</ul></li>
+	
+	<li>v1.3.0 [16 Jul 2005]<ul>
+		<li><span class=fix>[fix]</span> index now has correct numbers for links followed 
+			<span class=thanks>[reported by Ajay]</span></li>
+		<li><span class=fix>[fix]</span> 'robustified' the installation process 
+			<span class=thanks>[thanks to windancer and Tino for working with me on this]</span></li>
+		<li><span class=fix>[fix]</span> use $_GUS_table_prefix when constructing TEMPORARY TABLE names and, if it fails to
+			properly create it, use a regular table <span class=thanks>[suggested by B. Judson]</span></li>
+		<li><span class=fix>[fix]</span> remove keyword TABLE from TRUNCATE statements so that they work on MySQL versions 3.23.28 to 3.23.32 
+			<span class=thanks>[see <a href="http://dev.mysql.com/doc/mysql/en/truncate.html">MySQL manual</a>]</span></li>
+		<li><span class=fix>[fix]</span> don't allow blanks to be entered for IPs, names, and pages on the admin page</li> 
+		<li><span class=new>[new]</span> added new gTLDs to the country page</li>
+		<li><span class=new>[new]</span> link in the user block now includes a link to today's stats</li>
+		<li><span class=new>[new]</span> treat 404 page specially - now show what page the user was trying to access 
+			<span class=thanks>[inspired by machinari's question about 404s]</span><br><ul>
+			<li> this only works if you use a 404 page called 404.php which includes lib-common.php, such as the GL-supplied 404.php</li>
+			<li> it changes the way 404 pages are added to the database, so previous 404 pages won't have the additional info</li>
+		</ul></li>
+		<li><span class=new>[new]</span> host name lookup is controlled by two new config options <span class=conf_option>$_GUS_CONF['use_nslookup']</span> and <span class=conf_option>$_GUS_CONF['host_lookup_timeout']</span>
+			<ul><li><b>Windows users</b> will probably have to set <span class=conf_option>$_GUS_CONF['use_nslookup']</span> to 'true' [I don't run any web servers on Windows, so I can't verify this]</li></ul></li>
+		<li><span class=new>[new]</span> add links to whois and netcraft on the IP page</li>
+		<li><span class=new>[new]</span> show list of user agents associated with an IP on the IP page</li>
+		<li><span class=new>[new]</span> added config option to show only a count of registered users instead of their names 
+			<span class=thanks>[suggested by Martinez, based on the built-in Who's Online block]</span></li>
+		<li><span class=new>[new]</span> remove config options <span class=conf_option>$_GUS_sub</span> and <span class=conf_option>$_GUS_Whois</span></li>
+		<li><span class=new>[new]</span> changed some configuration option names - <b>if you've customised yours, you will have to change it</b></li>
+		<li><span class=new>[new]</span> more specific detection of Windows versions <span class=thanks>[thanks to Mark van der Heijden]</span></li>
+		<li><span class=new>[new]</span> translations<ul>
+			<li>Swedish <span class=thanks>[thanks to Markus Berg]</span></li>
+			<li>Dutch <span class=thanks>[thanks to Mark van der Heijden]</span></li>
+		</ul></li>
+	</ul></li>
+	
+	<li>v1.2.0 [08 May 2005]<ul>
+		<li><span class=fix>[fix]</span> should now install properly on Geeklog 1.3.12cvs 
+			<span class=thanks>[reported by ldfoo]</span></li>
+		<li><span class=fix>[fix]</span> import now works on PHP &lt; 4.2.0 
+			<span class=thanks>[reported by Ajay]</span></li>
+		<li><span class=fix>[fix]</span> fixed typo preventing cleanup in one case when the install failed 
+			<span class=thanks>[reported by ldfoo]</span></li>
+		<li><span class=fix>[fix]</span> various HTML cleanups and fixes</li>
+		<li><span class=new>[new]</span> clicking an IP address now takes you to a page where you can:<ul>
+			<li>lookup the IP using WHOIS</li>
+			<li>turn data collection on and off for the IP</li>
+			<li>you can ban the IP if you have the <a href="http://www.pigstye.net/gplugs/">ban plugin</a> installed</li>
+			<li>see the list of hostnames associated with the IP</li>
+		</ul></li>
+		<li><span class=new>[new]</span> the tables now use CSS<ul>
+			<li>note that the themes have changed significantly, so if you've made changes
+			you should look at them carefully</li>
+			<li>GUS will look in the &lt;public_html&gt;/gus/css directory for a file named {theme}.css and use it
+				if it exists.  If not, it will use default.css.</li>
+			<li>if you have created a CSS file for one of the common themes,
+				<a href="mailto://imol00@gmail.com?subject=GUS%20Theme%20CSS">send it to me</a> and I will
+				include it in future versions of GUS</li>
+		</ul></li>
+	</ul></li>
+	
+	<li>v1.1.0 [14 Apr 2005]<ul>
+		<li><span class=security>[security fix]</span> fixed a potential javascript injection through the referrer URL
+		<br>Note: The format of the referrers has been changed to fix this, so all data from 1.0 is invalid
+		and will have to be removed and re-imported [use the remove data capability on the admin page].</li>
+		<li>fixed a problem with URLs not being decoded properly when looking at page views</li>
+		<li>fixed a problem with importing user agents containing single quotes</li>
+		<li>added proper upgrade functionality</li>
+	</ul></li>
+	
+	<li>v1.0.0 [10 Apr 2005]<ul>
+		<li>initial version</li>
+	</ul></li>
+</ul>
+
+<a name=thanks></a><h3>Thanks!</h3>
+<ul>
+	<li>Tom Willett and John Hughes for writing the original stats plugin</li>
+	<li>Brian Bevel for help testing and the slick icons [<a href="http://www.deliciousironing.com">www.deliciousironing.com</a>]</li>
+	<li>Rick Robinson, Richard Rodriguez, Georg Kowallek, Joseph Anthony, and Tom Willett for help testing the pre-release versions of GUS 1.0.0</li>
+	<li>All the others listed in the release notes for reporting problems or making suggestions</li>
+</ul>
+
+<a name=install></a><h3>Installing The Plugin</h3>
+
+<ol>
+<li>Backup your Geeklog database because the GUS plugin adds and modifies tables.
+You can do this with the built in database backup facility in the Admin menu.</li>
+
+<li>Uncompress the GUS plugin archive while in the &lt;geeklog_dir&gt;/plugins directory.
+The archive will create a directory called gus.</li>
+
+<li>In your &lt;public_html&gt; directory, create a directory called gus.  Under your
+&lt;public_html&gt;/admin/plugins/ directory create a directory called gus.</li>
+
+<li>Change to your &lt;geeklog_dir&gt;/plugins/gus/ directory.</li>
+
+<li>Copy the files in the admin directory to the admin/plugins/gus/ directory you created in step 3.</li>
+
+<li>Copy the files and directories in the public_html directory to the public_html/gus/
+directory you created in step 3.</li>
+
+<li>Go to the plugin administration page.  The gus plugin
+should show up with a link to install it.  Click it.  The install page will tell you if the install
+was successful or not.  If not, examine the Geeklog system errorlog in &lt;geeklog_dir&gt;/logs to see
+what the problem was.  Fix it and re-install.</li>
+
+<li>The install page will offer you a link to the import page if it finds a suitable stats plugin to import from.
+If you choose not to do this right away, a link will appear on the admin page.</li>
+</ol>
+
+<a name=config></a><h3>Configuring The Plugin</h3>
+
+<ol>
+<li>In the Admin block you will find a link to the <b>GUS admin page</b> where you may set up ignored
+IP addresses, pages, and users.  By default the user and IP of the user who installed the plugin is
+entered in the ignore list and statistics capture is turned on.  The admin page lets you enter additional
+users and IPs for which usage information will not be collected. It also allows you to enable and disable
+statics capture.
+</li>
+<li>Set up <b>security</b>.  Upon install, only the root users have access to statistics admin and viewing.
+You can delegate control for either of these functions through the user and group editors.
+</li>
+<li>Review the <b>privacy policy</b>.  The installation also provides a privacy policy page. 
+This is controlled by the  $_GUS_priv variable in the config.php file.  If your
+site already has a privacy policy available to your site users, I would encourage you to review it and    
+see that it is worded so that your site users know what information is being collected about them.  If you    
+allowed anonymous access, a link to the visitor statistics viewer is also added.
+</li>
+<li>There are several variables in the <b>config.php</b> file which control the display of information.  These are documented in the file itself.
+</li>
+<li>As of version 1.2, GUS uses <b>CSS</b> when displaying the tables.  It only includes the CSS file when you are viewing a
+GUS page.  It first looks in &lt;public_html&gt;/gus/css for a file called {theme}.css - where {theme} is the name of the
+current theme.  If it doesn't find it, it will use the default.css file included with the plugin.  If you have created a
+CSS file for one of the common themes, <a href="mailto://imol00@gmail.com?subject=GUS%20Theme%20CSS">send it to me</a>
+and I will include it in future versions of GUS.
+</ol>
+
+<a name=import></a><h3>Importing Data From Stats</h3>
+
+GUS will give you the option to import your data and ignored lists from the stats plugin version 1.3.
+You may do this either when you are installing GUS, or from the admin page.  If you are going to do this,
+I recommend doing it as soon as you install GUS because if there are problems with the import, it may be
+difficult to recover.
+
+<p>Note that GUS does not use any of the tables from the stats plugin after the data has been imported,
+so it is safe to remove the stats plugin and all its tables.
+
+<a name=upgrade></a><h3>Upgrading The Plugin</h3>
+
+Upgrading GUS is very similar to installation:
+
+<ol>
+<li>Backup your Geeklog database because upgrading may add or modify database tables.
+You can do this with the built in database backup facility in the Admin menu.</li>
+
+<li>Disable GUS using the admin interface's plugin editor [Admin->Plugins->gus]</li>
+
+<li>Make a backup of your config.php so you can update the new one with your settings.</li>
+
+<li>Uncompress the GUS plugin and copy the new files over the old ones as if it were a new installation.</li>
+
+<li>Enable GUS using the admin interface [Admin->Plugins->gus]</li>
+
+<li>Go back to the plugin editor for GUS [Admin->Plugins->gus] and click the 'Update' button.</li>
+</ol>
+
+<a name=remove></a><h3>Removing The Plugin</h3>
+
+<ol>
+<li>Because the plugin modifies several database tables, it should <b>always</b> be removed through the interface provided.
+Log in to your Geeklog as a root user and go to the plugin administration page.  Click the 'gus'
+link and then click the 'Delete' button.  It will ask you to confirm it.  Confirm it.</li>
+
+<li>Delete the three plugin directories created in the install process:
+	<ul>
+		<li>&lt;geeklog-dir&gt;plugins/gus/</li>
+		<li>&lt;public_html&gt;/gus/</li>
+		<li>&lt;admin&gt;/plugins/gus/</li>
+	</ul>
+</li>
+
+<li>There is no step three.</li>
+</ol>
+
+<a name=you></a><h3>Things You Can Do</h3>
+<ul>
+	<li>Check my PHP &amp; SQL and tell me if there are better ways to do any of this.
+		[<a href="mailto://imol00@gmail.com?subject=GUS%20Coding">email me</a>]</li>
+	<li>Let me know if you use it or have any suggestions.
+		[<a href="mailto://imol00@gmail.com?subject=GUS%20Suggestions">email me</a>]</li>
+	<li>Link to my site [<a href="http://imol.gotdns.com">http://imol.gotdns.com</a>] somewhere on yours.
+	<li>Support development by making a donation:
+		<br/><br/>
+		<form action="https://www.paypal.com/cgi-bin/webscr" method="post">		<input type="hidden" name="cmd" value="_s-xclick">		<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but04.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">		<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----		">		</form>
+		or by using one of the following links to shop at amazon:
+		<ul>
+		<li><a href="http://www.amazon.com/exec/obidos/redirect?tag=imol-20&amp;path=http://amazon.com">amazon.com</a></li>
+		<li><a href="http://www.amazon.ca/exec/obidos/redirect?tag=imol0a-20&amp;path=http://amazon.ca">amazon.ca</a></li>
+		<li><a href="http://www.amazon.co.uk/exec/obidos/redirect?tag=imol-21&amp;path=http%3A//amazon.co.uk">amazon.co.uk</a></li> 
+		<li><a href="http://www.amazon.fr/exec/obidos/redirect?tag=imol08-21&amp;path=http%3A//amazon.fr">amazon.fr</a></li>
+		<li><a href="http://www.amazon.de/exec/obidos/redirect?tag=imol05-21&amp;path=http%3A//amazon.de">amazon.de</a></li>
+		<li><a href="http://www.amazon.co.jp/exec/obidos/redirect?tag=imol-22&amp;path=http%3A//amazon.co.jp">amazon.co.jp</a></li>
+		</ul>
+	</li>
+</ul>
+
+
+<a name=license></a><h3>License</h3>
+The GUS plugin is licensed under the GPL even though I don't really understand it and all its implications.
+<p>Why do we let legalese control the world?
+</body>
+
+</html>
