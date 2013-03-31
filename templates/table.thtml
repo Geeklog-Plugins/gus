@@ -1,0 +1,11 @@
+<!-- BEGIN TABLE -->
+<table cellspacing="0" cellpadding="5">
+<!-- BEGIN ROW -->
+<tr class={rowclass}>
+<!-- BEGIN COLUMN -->
+<td class={colclass}>{starthref}{data}{endhref}</td>
+<!-- END COLUMN -->
+</tr>
+<!-- END ROW -->
+</table>
+<!-- END TABLE -->

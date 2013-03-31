@@ -1,0 +1,83 @@
+
+.gus div.title {
+	padding-bottom: 5px;
+	margin: 5px 0px 10px 6px;
+	font-weight: bold;
+ }
+.gus div.title img {
+	vertical-align: middle;
+	border: 0px;
+	width: 24px;
+	height: 24px;
+}
+
+.gus table {
+	margin: 0px;
+	border: 1px solid rgb(135, 140, 255);
+}
+
+.gus tr.header {
+	background-color: rgb(175, 180, 255);
+}
+.gus tr.header td {
+	font-weight: bold;
+	font-size: x-small;
+	border-bottom: 1px solid rgb(135, 140, 255);
+}
+
+.gus tr.row1	{}
+.gus tr.row2	{ background-color: rgb(215, 220, 245); }
+
+.gus td	{ padding: 4px 10px 4px 10px; }
+
+.gus td.col_right	{ text-align: right; }
+.gus td.col_left	{ text-align: left; }
+
+.gus tr.totals {
+	text-align: right;
+	border-top: 1px solid black;
+}
+.gus tr.totals td {
+	font-weight: bold;
+	font-size: x-small;
+	border-top: 1px solid rgb(135, 140, 255);
+	background-color: rgb(175, 180, 255);
+}
+
+.gus span.a404 { color: red; }
+
+table.tabs {
+	border-spacing: 5px 0px;
+	margin-left: -5px;
+}
+
+td.tabs {
+	border-top : 1px solid rgb(26, 57, 85);
+	border-left : 1px solid rgb(26, 57, 85);
+	border-right : 1px solid rgb(26, 57, 85);
+	margin : 0px;
+}
+
+div.tabs {
+	background-color : #CCCCFF;
+	cursor : pointer;
+	cursor : hand;
+	padding : 3px 6px;
+}
+
+.tabpane {
+	display : none;
+	background-color : rgb(231, 231, 231);
+	padding : 5px;
+	margin : 0px;
+	border : 1px solid rgb(26, 57, 85);
+}
+
+.noscriptpane {
+	background-color : rgb(231, 231, 231);
+	padding : 3px 5px;
+	margin : 0px;
+	border : 1px solid rgb(26, 57, 85);
+}
+
+.smaller { 	font-size: x-small; }

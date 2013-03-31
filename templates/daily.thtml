@@ -1,0 +1,30 @@
+<table cellspacing="0" cellpadding="5">
+<tr style="text-align: right;" class=header>
+	<td>{period_title}</td>
+	<td>{anon_title}</td>
+	<td>{reg_title}</td>
+	<td>{page_title}</td>
+	<td>{story_title}</td>
+	<td>{comm_title}</td>
+	<td>{link_title}</td>
+</tr>
+<!-- BEGIN ROW -->
+<tr style="text-align: right;" class={rowclass}>
+	<td nowrap><a href="{site_url}/{stats_name}/day.php?month={mon}&amp;year={year}&amp;day={day}">{day_display}</a></td>
+	<td><a href="{site_url}/{stats_name}/day.php?month={mon}&amp;year={year}&amp;day={day}&amp;anon=1">{anon}</a></td>
+	<td><a href="{site_url}/{stats_name}/day.php?month={mon}&amp;year={year}&amp;day={day}&amp;anon=2">{reg}</a></td>
+	<td><a href="{site_url}/{stats_name}/pages.php?month={mon}&amp;year={year}&amp;day={day}">{pages}</a></td>
+	<td><a href="{site_url}/{stats_name}/stories.php?month={mon}&amp;year={year}&amp;day={day}">{stories}</a></td>
+	<td><a href="{site_url}/{stats_name}/comments.php?month={mon}&amp;year={year}&amp;day={day}">{comments}</a></td>
+	<td><a href="{site_url}/{stats_name}/links.php?month={mon}&amp;day={day}&amp;year={year}">{linksf}</a></td>
+</tr>
+<!-- END ROW -->
+<tr class=totals>
+	<td>{period}</td>
+	<td>{anon}</td><td>{reg}</td>
+	<td>{pages}</td>
+	<td>{stories}</td>
+	<td>{comments}</td>
+	<td>{linksf}</td>
+</tr>
+</table>
