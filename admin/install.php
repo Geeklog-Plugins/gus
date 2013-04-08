@@ -50,8 +50,8 @@ if (!SEC_inGroup('Root')) {
 
 $pi_name = 'gus';
 $pi_version = plugin_chkVersion_gus();
-$gl_version = '1.3.11';
-$pi_url = 'http://imol.gotdns.com';
+$gl_version = '1.4.1';
+$pi_url = 'http://code.google.com/p/geeklog/';
 
 $_FEATURE = array(
 	'gus.admin' => 'GUS Admin',
@@ -158,6 +158,7 @@ function plugin_install_gus() {
 	}
 	
 	// add the block
+	/*
 	COM_errorLog('Adding Who\'s Online block', 1);
 	$block_id = DB_getItem($_TABLES['blocks'], 'bid ', "phpblockfn = 'phpblock_gusstats'");
 	
@@ -175,6 +176,7 @@ function plugin_install_gus() {
 	} else {
 		DB_query("UPDATE {$_TABLES['blocks']} SET group_id = {$group_id} WHERE bid = {$block_id} LIMIT 1", 1);
 	}
+	*/
 	
 	// OK, now give Root users access to this plugin now! NOTE: Root group should always be 1
 	COM_errorLog("Giving all users in Root group access to GUS admin group", 1);
@@ -232,8 +234,7 @@ if ($action === 'install') {
 		$readme_url = $_CONF['site_admin_url'] . '/plugins/gus/readme.html';
 		$display .= "<img align=left src=\"{$img_url}\" alt='GUS Icon' width=48 height=48>"
 				 .  '<p>I have created all the necessary tables and activated the Who\'s Online block. '
-				 .  "If you do not want to use it, then you may disable it using the
-			<a href=\"{$blockManager}\">Block Manager</a> page."
+				 .  "If you do not want to use it, then you may disable it by changing the GUS config.php file located in the plugins/gus directory. "
 				 .  "<p>To configure GUS, go to the <a href=\"$admin_url\">admin page</a>.
 			Information about the various configuration options	may be found in the 
 			<a href=\"{$readme_url}#config\">README file</a>."

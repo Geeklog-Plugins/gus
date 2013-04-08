@@ -644,4 +644,4 @@ echo COM_siteHeader();
 echo COM_startBlock($header, $readme_url);
 echo $display;
 echo COM_endBlock();
-echo COM_siteFooter(TRUE);
+echo COM_siteFooter();
