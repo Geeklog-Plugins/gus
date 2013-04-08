@@ -456,6 +456,14 @@ function GUS_doUpgrades($current_gus_version) {
 			case '1.5.0':
 			case '1.6.0':
 			case '1.7.0':
+				$_SQL = array();
+				
+				require_once $_CONF['path'] . 'plugins/gus/sql/updates/gus_1.7.0_to_1.7.1.php';
+
+				foreach ($_SQL as $sql) {
+					DB_query($sql);
+				}
+			    
 				$current_gus_version = '1.7.1';
 				break;
 								
@@ -501,8 +509,8 @@ function plugin_uninstall_gus() {
 	}
 
 	// remove block
-	COM_errorLog("Removing gus block", 1);
-	GUS_log_and_execute("DELETE FROM {$_TABLES['blocks']} WHERE name='gus_block' LIMIT 1");
+	// COM_errorLog("Removing gus block", 1);
+	// GUS_log_and_execute("DELETE FROM {$_TABLES['blocks']} WHERE name='gus_block' LIMIT 1");
 
 	// Remove Security for this plugin
 	$grp_id = DB_getItem($_TABLES['vars'], 'value', "name = 'gus_group_id'");
@@ -1119,3 +1127,93 @@ function GUS_create_url($ignore) {
 	
 	return htmlentities($retval);
 }
+
+
+/**
+* Gets Geeklog blocks from plugins
+*
+* Returns data for blocks on a given side and, potentially, for
+* a given topic.
+*
+* @param    string  $side   Side to get blocks for (right or left for now)
+* @param    string  $topic  Only get blocks for this topic
+* @return   array           array of block data
+* @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
+*
+*/
+function plugin_getBlocks_gus($side, $topic='')
+{
+    global $_TABLES, $_CONF, $_GUS_CONF, $LANG_POLLS;
+    
+    $retval = array();
+    
+    $owner_id = SEC_getDefaultRootUser();
+    $group_id = DB_getItem($_TABLES['vars'], 'value', "name = 'gus_group_id'");
+    
+    // Check permissions first
+    if ($_GUS_CONF['block_enable'] && SEC_hasAccess($owner_id, $group_id, $_GUS_CONF['block_permissions'][0], $_GUS_CONF['block_permissions'][1], $_GUS_CONF['block_permissions'][2], $_GUS_CONF['block_permissions'][3])) {
+        // Check if right topic
+        if (($_GUS_CONF['block_topic_option'] == TOPIC_ALL_OPTION) || ($_GUS_CONF['block_topic_option'] == TOPIC_HOMEONLY_OPTION && COM_onFrontpage()) || ($_GUS_CONF['block_topic_option'] == TOPIC_SELECTED_OPTION && in_array($topic, $_GUS_CONF['block_topic']))) {
+            if (($side=='left' && $_GUS_CONF['block_isleft'] == 1) || ($side=='right' && $_GUS_CONF['block_isleft'] == 0)) { 
+                // Create a block
+                $display = phpblock_gusstats();
+                
+                $retval[] = array('name'           => 'gus_whos_online',
+                                  'type'           => 'dynamic',
+                                  'onleft'         => $_GUS_CONF['block_isleft'],
+                                  'title'          => $LANG_GUS_wo['title'],
+                                  'blockorder'     => $_GUS_CONF['block_order'],
+                                  'content'        => $display,
+                                  'allow_autotags' => false,
+                                  'help'           => '');
+            }
+        }
+    }
+    
+    return $retval;
+}
+
+/**
+* Gets config information for dynamic blocks from plugins
+*
+* Returns data for blocks on a given side and, potentially, for
+* a given topic.
+*
+* @param    string  $side   Side to get blocks for (right or left for now)
+* @param    string  $topic  Only get blocks for this topic
+* @return   array           array of block data
+* @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
+*
+*/
+function plugin_getBlocksConfig_gus($side, $topic='')
+{
+    global $_TABLES, $_CONF, $_GUS_CONF, $LANG_GUS_wo;
+    
+    $retval = array();
+    
+    $owner_id = SEC_getDefaultRootUser();
+    $group_id = DB_getItem($_TABLES['vars'], 'value', "name = 'gus_group_id'");
+    
+    // Check permissions first
+    if (SEC_hasAccess($owner_id, $group_id, $_GUS_CONF['block_permissions'][0], $_GUS_CONF['block_permissions'][1], $_GUS_CONF['block_permissions'][2], $_GUS_CONF['block_permissions'][3])) {
+        if (($side=='left' && $_GUS_CONF['block_isleft'] == 1) || ($side=='right' && $_GUS_CONF['block_isleft'] == 0)) { 
+            $retval[] = array('plugin'         => 'GUS',
+                              'name'           => 'gus_whos_online',
+                              'title'          => $LANG_GUS_wo['title'],
+                              'type'           => 'dynamic',
+                              'onleft'         => $_GUS_CONF['block_isleft'],
+                              'blockorder'     => $_GUS_CONF['block_order'],
+                              'allow_autotags' => false,
+                              'help'           => '',
+                              'enable'         => $_GUS_CONF['block_enable'],
+                              'topic_option'   => $_GUS_CONF['block_topic_option'],
+                              'topic'          => $_GUS_CONF['block_topic'],
+                              'inherit'        => array()
+                              );
+        }
+    }
+    
+    return $retval;
+}
+
+?>
