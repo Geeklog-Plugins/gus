@@ -79,7 +79,7 @@ if (file_exists(GUS_cachefile()) AND ($today != $day . $month . $year)) {
 	$pageviews = 0;
 	
 	for ($i = 0; $i < $nrows; $i++) {
-		if ($i + 1 % 2) {
+		if (($i + 1) % 2) {
 			$T->set_var('rowclass', 'row1');
 		} else {
 			$T->set_var('rowclass', 'row2');
