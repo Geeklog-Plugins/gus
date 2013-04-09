@@ -253,7 +253,7 @@ $T->set_var('rowclass', 'header');
 $T->parse('BBlock', 'ROW' , TRUE);
 
 for ($i = 0; $i < $nrows; $i++) {
-	if ($i + 1 % 2) {
+	if (($i + 1) % 2) {
 		$T->set_var('rowclass', 'row1');
 	} else {
 		$T->set_var('rowclass', 'row2');

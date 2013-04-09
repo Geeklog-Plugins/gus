@@ -74,7 +74,7 @@ if (file_exists(GUS_cachefile()) AND ($today != $month . $year)) {
 	$temp_table = GUS_create_temp_userstats_table($year, $month);
 
 	for ($i = 0; $i < 24; $i++) {
-		if ($i + 1 % 2) {
+		if (($i + 1) % 2) {
 			$T->set_var('rowclass', 'row1');
 		} else {
 			$T->set_var('rowclass', 'row2');
