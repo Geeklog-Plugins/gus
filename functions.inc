@@ -1143,7 +1143,7 @@ function GUS_create_url($ignore) {
 */
 function plugin_getBlocks_gus($side, $topic='')
 {
-    global $_TABLES, $_CONF, $_GUS_CONF, $LANG_POLLS;
+    global $_TABLES, $_CONF, $_GUS_CONF, $LANG_POLLS, $LANG_GUS_wo;
     
     $retval = array();
     
