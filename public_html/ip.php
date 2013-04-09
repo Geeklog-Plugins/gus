@@ -52,10 +52,25 @@ if ($gus_ip_collect_data == '0') {
 	DB_query("DELETE FROM {$_TABLES['gus_ignore_ip']} WHERE ip = '$ip_addr' LIMIT 1", 1);
 }
 
-if ($gus_ip_ban == '0') {
-	DB_query("DELETE FROM {$_TABLES['ban']} WHERE bantype='REMOTE_ADDR' AND data='$ip_addr' LIMIT 1", 1);
-} else if ($gus_ip_ban == '1') {
-	DB_query("INSERT IGNORE INTO {$_TABLES['ban']} VALUES ('REMOTE_ADDR', '$ip_addr')", 1);
+
+// check for the Ban plugin and which table structure to use
+$ban_plugin_version = DB_getItem($_TABLES['plugins'], 'pi_version', "pi_name = 'ban'");
+$ban_plugin_check = (version_compare($ban_plugin_version, '2.0.0') >= 0);
+
+if (!empty($ban_plugin_version)) {
+    if ($gus_ip_ban == '0') {
+        if ($ban_plugin_check) {
+            DB_query( "DELETE FROM {$_TABLES['ban']} WHERE bantype='REMOTE_ADDR' AND data='$ip_addr' AND status <> 0 LIMIT 1", 1 );
+        } else {
+            DB_query("DELETE FROM {$_TABLES['ban']} WHERE bantype='REMOTE_ADDR' AND data='$ip_addr' LIMIT 1", 1);
+        }
+    } else if ($gus_ip_ban == '1') {
+        if ($ban_plugin_check) {
+            DB_query( "INSERT IGNORE INTO {$_TABLES['ban']} (bantype, data) VALUES ('REMOTE_ADDR', '$ip_addr')", 1 );
+        } else {
+            DB_query("INSERT IGNORE INTO {$_TABLES['ban']} VALUES ('REMOTE_ADDR', '$ip_addr')", 1);
+        }
+    }
 }
 
 // main SQL query
@@ -128,10 +143,7 @@ $data .= '</tr><tr>'
 	  .  '<td class=col_right>Ban IP:</td>';
 
 // check for the Ban plugin
-$result = DB_query("SELECT COUNT(*) AS installed FROM {$_TABLES['plugins']} WHERE pi_name = 'ban'");
-$row = DB_fetchArray($result, FALSE);
-
-if ($row['installed'] == '1') {
+if (!empty($ban_plugin_version)) {
 	// Check to see if this IP is banned or not
 	$result = DB_query("SELECT COUNT(*) AS banned
 							FROM {$_TABLES['ban']}
@@ -153,7 +165,7 @@ if ($row['installed'] == '1') {
 			  .  '</form></td>';
 	}
 } else {
-	$data .= '<td colspan=2>[the <a href="http://gplugs.sourceforge.net">ban plugin</a> is not installed]</td>';
+	$data .= '<td colspan=2>[the <a href="http://code.google.com/p/geeklog/" target="_blank">ban plugin</a> is not installed]</td>';
 }
 
 $data .= '</tr></table></td><tr><td>';
