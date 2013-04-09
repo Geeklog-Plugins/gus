@@ -36,7 +36,7 @@ $_GUS_CONF['block_isleft'] = 0; // Whether to display the block on the left (whe
 $_GUS_CONF['block_order'] = 0; // The order the block appears in the column.
 $_GUS_CONF['block_topic_option'] = TOPIC_HOMEONLY_OPTION; // TOPIC_ALL_OPTION, TOPIC_HOMEONLY_OPTION, TOPIC_SELECTED_OPTION - Set to 'All' for block to appear on all pages. Set to 'Homepage Only' for block to appear on just the homepage. Set to 'Selected Topics' for block to appear only in Topics selected in the Topic setting.
 $_GUS_CONF['block_topic'] = array(); // The topics the block will appear for if the Topic Options is set to 'Select Topics'.
-$_GUS_CONF['block_permissions'] = array (2, 2, 2, 2); // 1 = No Access, 2 = Read-Only
+$_GUS_CONF['block_permissions'] = array (2, 2, 0, 0); // 0 = No Access, 2 = Read-Only for (Owner, Group, Member, Anonymous)
 
 // The method to use for host name lookup - can be 'host', 'nslookup', or 'gethostbyaddr'
 // If your system is set up such that you cannot execute shell commands, use 'gethostbyaddr'.
