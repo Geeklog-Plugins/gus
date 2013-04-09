@@ -911,7 +911,7 @@ function phpblock_gusstats() {
 		while ($row = DB_fetchArray($result, FALSE)) {
 			$ip = $row['remote_ip'];
 			
-			if (preg_match(@"^216\.239\.46|^64\.68\.8|^66\.249\.(6[4-9]|[78]\d?|9[0-5])@", $ip)) {
+			if (preg_match("@^216\.239\.46|^64\.68\.8|^66\.249\.(6[4-9]|[78]\d?|9[0-5])@", $ip)) {
 				$bot_list[] = 'Google';
 				$num_anon--;
 			} else if (preg_match("@^68\.142\.(19[2-9]|2[01234]\d?|25[012345])|
