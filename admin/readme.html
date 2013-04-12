@@ -26,9 +26,9 @@
 </head>
 <body bgcolor="#ffffff">
 
-<h2>Geeklog Usage Stats Plugin [v1.7.0]</h2>
-by Andy Maloney [<a href="mailto://imol00@gmail.com">imol00@gmail.com</a>]<br>
-09 Apr 2006
+<h2>Geeklog Usage Stats Plugin [v1.7.2]</h2>
+Developer Website: <a href="http://code.google.com/p/geeklog/" target="_blank">Geeklog Plugins Repository</a><br>
+Released: April 12, 2013
 
 <h3>Table of Contents</h3>
 
@@ -93,6 +93,18 @@ How about the price of a <b>pizza</b> or even just <b>a beer</b>?  Check out the
 
 <a name=version></a><h3>Version History</h3>
 <ul>
+	<li>v1.7.2 [12 Apr 2013]<ul> 
+		<li><span class=fix>[fix]</span> fixed Who's Online block title not displaying</li>
+		<li><span class=fix>[fix]</span> updated default block permissions so it doesn't display for anonymous users</li>
+		<li><span class=fix>[fix]</span> fixed mistake in preg_match statement which prevented the block from displaying</li>
+		<li><span class=fix>[fix]</span> updated use of the ban plugin to take into account the new version</li>
+		<li><span class=fix>[fix]</span> fixed table rows not using alternate colors in most reports</li>
+	</ul></li>
+	<li>v1.7.1 [08 Apr 2013]<ul>
+		<li><span class=fix>[fix]</span> compatible with Geeklog 1.4.1 or higher including Geeklog 2.0.0</li>
+		<li><span class=fix>[fix]</span> preg_match is now used instead of eregi</li>
+		<li><span class=new>[new]</span> Who's Online block is now a dynamic block (configurable in the GUS config.php file)</li>
+	</ul></li>
 	<li>v1.7.0 [09 Apr 2006]<ul>
 		<li><span class=fix>[fix]</span> fix paging when register_globals is off</li>
 		<li><span class=fix>[fix]</span> fix several other issues when register_globals is off <span class=thanks>[thanks Randall Hand]</span></li>
@@ -110,7 +122,6 @@ How about the price of a <b>pizza</b> or even just <b>a beer</b>?  Check out the
 		<ul>
 			<li>controlled by the <span class=conf_option>$_GUS_CONF['wo_hide_referrers']</span> option in config.php</li>
 		</ul></li> 
-</li>
 	</ul></li>
 	
 	<li>v1.6.0 [29 Jan 2006]<ul>
@@ -262,6 +273,7 @@ How about the price of a <b>pizza</b> or even just <b>a beer</b>?  Check out the
 
 <a name=thanks></a><h3>Thanks!</h3>
 <ul>
+    <li>Andy Maloney for writing and maintaining the GUS plugin up to and including version 1.7.0</li>
 	<li>Tom Willett and John Hughes for writing the original stats plugin</li>
 	<li>Brian Bevel for help testing and the slick icons [<a href="http://www.deliciousironing.com">www.deliciousironing.com</a>]</li>
 	<li>Rick Robinson, Richard Rodriguez, Georg Kowallek, Joseph Anthony, and Tom Willett for help testing the pre-release versions of GUS 1.0.0</li>
@@ -373,23 +385,11 @@ link and then click the 'Delete' button.  It will ask you to confirm it.  Confir
 <a name=you></a><h3>Things You Can Do</h3>
 <ul>
 	<li>Check my PHP &amp; SQL and tell me if there are better ways to do any of this.
-		[<a href="mailto://imol00@gmail.com?subject=GUS%20Coding">email me</a>]</li>
-	<li>Let me know if you use it or have any suggestions.
-		[<a href="mailto://imol00@gmail.com?subject=GUS%20Suggestions">email me</a>]</li>
-	<li>Link to my site [<a href="http://imol.gotdns.com">http://imol.gotdns.com</a>] somewhere on yours.
-	<li>Support development by making a donation:
-		<br/><br/>
-		<form action="https://www.paypal.com/cgi-bin/webscr" method="post">		<input type="hidden" name="cmd" value="_s-xclick">		<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but04.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">		<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----		">		</form>
-		or by using one of the following links to shop at amazon:
-		<ul>
-		<li><a href="http://www.amazon.com/exec/obidos/redirect?tag=imol-20&amp;path=http://amazon.com">amazon.com</a></li>
-		<li><a href="http://www.amazon.ca/exec/obidos/redirect?tag=imol0a-20&amp;path=http://amazon.ca">amazon.ca</a></li>
-		<li><a href="http://www.amazon.co.uk/exec/obidos/redirect?tag=imol-21&amp;path=http%3A//amazon.co.uk">amazon.co.uk</a></li> 
-		<li><a href="http://www.amazon.fr/exec/obidos/redirect?tag=imol08-21&amp;path=http%3A//amazon.fr">amazon.fr</a></li>
-		<li><a href="http://www.amazon.de/exec/obidos/redirect?tag=imol05-21&amp;path=http%3A//amazon.de">amazon.de</a></li>
-		<li><a href="http://www.amazon.co.jp/exec/obidos/redirect?tag=imol-22&amp;path=http%3A//amazon.co.jp">amazon.co.jp</a></li>
-		</ul>
-	</li>
+		[<a href="http://code.google.com/p/geeklog/issues/list">Visit</a>]</li>
+	<li>Feature requests and bug reports.
+		[<a href="http://code.google.com/p/geeklog/issues/list">Visit</a>]</li>
+	<li>Creating a new translation for a language we do not support.
+		[<a href="http://code.google.com/p/geeklog/issues/list">Contact</a>]</li>
 </ul>
 
 
