@@ -145,10 +145,19 @@ $data .= '</tr><tr>'
 // check for the Ban plugin
 if (!empty($ban_plugin_version)) {
 	// Check to see if this IP is banned or not
-	$result = DB_query("SELECT COUNT(*) AS banned
-							FROM {$_TABLES['ban']}
-							WHERE bantype = 'REMOTE_ADDR' AND data = SUBSTRING( '$ip_addr', 1, LENGTH( data ) )
-							LIMIT 1", 1);
+	
+	if ($ban_plugin_check) {
+        $result = DB_query("SELECT COUNT(*) AS banned
+                                FROM {$_TABLES['ban']}
+                                WHERE bantype = 'REMOTE_ADDR' AND status <> 0 AND data = SUBSTRING( '$ip_addr', 1, LENGTH( data ) )
+                                LIMIT 1", 1);
+	    
+    } else {
+        $result = DB_query("SELECT COUNT(*) AS banned
+                                FROM {$_TABLES['ban']}
+                                WHERE bantype = 'REMOTE_ADDR' AND data = SUBSTRING( '$ip_addr', 1, LENGTH( data ) )
+                                LIMIT 1", 1);
+    }    
 	$row = DB_fetchArray($result, FALSE);
 	
 	if ($row['banned'] == '1') {
