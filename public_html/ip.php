@@ -52,25 +52,13 @@ if ($gus_ip_collect_data == '0') {
 	DB_query("DELETE FROM {$_TABLES['gus_ignore_ip']} WHERE ip = '$ip_addr' LIMIT 1", 1);
 }
 
-
 // check for the Ban plugin and which table structure to use
-$ban_plugin_version = DB_getItem($_TABLES['plugins'], 'pi_version', "pi_name = 'ban'");
-$ban_plugin_check = (version_compare($ban_plugin_version, '2.0.0') >= 0);
-
-if (!empty($ban_plugin_version)) {
-    if ($gus_ip_ban == '0') {
-        if ($ban_plugin_check) {
-            DB_query( "DELETE FROM {$_TABLES['ban']} WHERE bantype='REMOTE_ADDR' AND data='$ip_addr' AND status <> 0 LIMIT 1", 1 );
-        } else {
-            DB_query("DELETE FROM {$_TABLES['ban']} WHERE bantype='REMOTE_ADDR' AND data='$ip_addr' LIMIT 1", 1);
-        }
-    } else if ($gus_ip_ban == '1') {
-        if ($ban_plugin_check) {
-            DB_query( "INSERT IGNORE INTO {$_TABLES['ban']} (bantype, data) VALUES ('REMOTE_ADDR', '$ip_addr')", 1 );
-        } else {
-            DB_query("INSERT IGNORE INTO {$_TABLES['ban']} VALUES ('REMOTE_ADDR', '$ip_addr')", 1);
-        }
-    }
+if (function_exists('BAN_for_plugins_check_access') AND BAN_for_plugins_check_access()) {
+	if ($gus_ip_ban == '0') { // Delete
+		BAN_for_plugins_ban_ip($ip_addr, 'gus', false);
+	} else if ($gus_ip_ban == '1') { // Insert
+		BAN_for_plugins_ban_ip($ip_addr, 'gus');
+	}
 }
 
 // main SQL query
@@ -143,24 +131,8 @@ $data .= '</tr><tr>'
 	  .  '<td class=col_right>Ban IP:</td>';
 
 // check for the Ban plugin
-if (!empty($ban_plugin_version)) {
-	// Check to see if this IP is banned or not
-	
-	if ($ban_plugin_check) {
-        $result = DB_query("SELECT COUNT(*) AS banned
-                                FROM {$_TABLES['ban']}
-                                WHERE bantype = 'REMOTE_ADDR' AND status <> 0 AND data = SUBSTRING( '$ip_addr', 1, LENGTH( data ) )
-                                LIMIT 1", 1);
-	    
-    } else {
-        $result = DB_query("SELECT COUNT(*) AS banned
-                                FROM {$_TABLES['ban']}
-                                WHERE bantype = 'REMOTE_ADDR' AND data = SUBSTRING( '$ip_addr', 1, LENGTH( data ) )
-                                LIMIT 1", 1);
-    }    
-	$row = DB_fetchArray($result, FALSE);
-	
-	if ($row['banned'] == '1') {
+if (function_exists('BAN_for_plugins_check_access') AND BAN_for_plugins_check_access()) {
+	if (BAN_for_plugins_ban_found($ip_addr)) {
 		$data .= '<td><span style="font-weight: bold;">on</span></td>'
 			  .  "<td><form method='POST' action='" . $actionURL . "'>"
 			  .  "<input type=submit value='Turn Off'>"
@@ -174,7 +146,7 @@ if (!empty($ban_plugin_version)) {
 			  .  '</form></td>';
 	}
 } else {
-	$data .= '<td colspan=2>[the <a href="http://code.google.com/p/geeklog/" target="_blank">ban plugin</a> is not installed]</td>';
+	$data .= '<td colspan=2>[A compatible version of the <a href="http://code.google.com/p/geeklog/" target="_blank">ban plugin</a> is not installed or you do not have access]</td>';
 }
 
 $data .= '</tr></table></td><tr><td>';
