@@ -125,6 +125,8 @@ $LANG_GUS_admin = array(
 	'turnon'		=> 'データ取得開始',
 	'turnoff'		=> 'データ取得中断',
 
+    'instructions'	=> 'The Geeklog Usage Stats [GUS] plugin collects statistics on who visits your site, what browser and operating system they are using, which pages they view, and which links they are clicking to get there. It allows the administrator to browse these stats through a series of tables, getting right down into the data.',
+    
 	// Ignore section
 	'ignore'    => '無視する項目',
 	

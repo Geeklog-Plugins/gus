@@ -463,7 +463,7 @@ if ($action === 'capture_on') {
 GUS_admin_load_ignore_tables();
 
 // Capture
-$display .= "<hr><h4>{$LANG_GUS_admin['capture']}</h4>"
+$display .= "<h4>{$LANG_GUS_admin['capture']}</h4>"
 		 .  "<form method=POST action=\"{$_CONF['site_admin_url']}/plugins/gus/index.php\">";
 
 if ($_GUS_VARS['capture'] == '1') {
@@ -636,12 +636,27 @@ if (GUS_checkStatsInstall() AND ($_ST_plugin_name != '') AND ($_GUS_VARS['import
 	}
 }
 
-$img_url = $_CONF['site_url'] . '/gus/images/' . $_GUS_IMG_small_name;
-$header = '<img src="' . $img_url . '" width=24 height=24 alt="GUS pic" align=middle>&nbsp;&nbsp;' . $LANG_GUS_admin['admin'] . ' [v' . plugin_chkVersion_gus() .']';
+
 $readme_url = $_CONF['site_admin_url'] . '/plugins/gus/readme.html#config';
 
-echo COM_siteHeader();
-echo COM_startBlock($header, $readme_url);
+$menu_arr = array (
+                array('url' => $_CONF['site_admin_url'],
+                      'text' => $LANG_ADMIN['admin_home'])
+);
+
+$retval = COM_siteHeader ('menu', $LANG_GUS_admin['admin']);
+$retval .= COM_startBlock($LANG_GUS_admin['admin'] . ' [v' . plugin_chkVersion_gus() .']', $readme_url,
+                                            COM_getBlockTemplate('_admin_block', 'header'));
+
+$retval .= ADMIN_createMenu($menu_arr, $LANG_GUS_admin['instructions'], plugin_geticon_gus());
+    
+$display = $retval . $display;
+
+$display .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+$display .= COM_siteFooter();
+
 echo $display;
-echo COM_endBlock();
-echo COM_siteFooter();
+
+?>
+
+
