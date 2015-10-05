@@ -355,6 +355,13 @@ function plugin_cclabel_gus() {
 	return $retval;
 }
 
+function plugin_geticon_gus ()
+{
+    global $_CONF, $_GUS_IMG_name;
+
+    return $_CONF['site_url'] . '/gus/images/' . $_GUS_IMG_name;
+}
+
 /**
 * returns the administrative option for this plugin
 *
@@ -726,6 +733,9 @@ function GUS_addStats($page, $user_id, $user_name, $host_name, $user_agent) {
 	if ($row = DB_fetchArray($res)) {
 		$ua_id = $row[0];
 	} else {
+        // Let's lock the table to prevent sql errors by duplicate entries
+        DB_lockTable($_TABLES['gus_user_agents']);
+    
 		$browser  = GUS_getBrowser($_SERVER['HTTP_USER_AGENT']);
 		$platform = GUS_getComputerType($_SERVER['HTTP_USER_AGENT']);
 
@@ -737,6 +747,8 @@ function GUS_addStats($page, $user_id, $user_name, $host_name, $user_agent) {
 
 		$res = DB_query($sql);
 		$ua_id = DB_insertId();
+        
+        DB_unlockTable($_TABLES['gus_user_agents']);
 	}
 	
 	// SPECIAL CASE: 404s fill in the query string witht the URI the user was trying to access
