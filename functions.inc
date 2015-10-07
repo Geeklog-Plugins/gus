@@ -733,21 +733,26 @@ function GUS_addStats($page, $user_id, $user_name, $host_name, $user_agent) {
 	if ($row = DB_fetchArray($res)) {
 		$ua_id = $row[0];
 	} else {
-        // Let's lock the table to prevent sql errors by duplicate entries
+        // Let's lock the table to prevent sql errors by duplicate entries and check again under locked conditions
         DB_lockTable($_TABLES['gus_user_agents']);
-    
-		$browser  = GUS_getBrowser($_SERVER['HTTP_USER_AGENT']);
-		$platform = GUS_getComputerType($_SERVER['HTTP_USER_AGENT']);
-
-		$sql = "INSERT INTO {$_TABLES['gus_user_agents']} SET
-			user_agent = '{$user_agent}',
-			browser = '" . $browser['type'] . "',
-			version = '" . $browser['ver'] . "',
-			platform = '" . $platform . "'";
-
-		$res = DB_query($sql);
-		$ua_id = DB_insertId();
+        $sql = "SELECT ua_id FROM {$_TABLES['gus_user_agents']} WHERE user_agent = '{$user_agent}' LIMIT 1";
+        $res = DB_query($sql);
         
+        if ($row = DB_fetchArray($res)) {
+            $ua_id = $row[0];
+        } else {        
+            $browser  = GUS_getBrowser($_SERVER['HTTP_USER_AGENT']);
+            $platform = GUS_getComputerType($_SERVER['HTTP_USER_AGENT']);
+
+            $sql = "INSERT INTO {$_TABLES['gus_user_agents']} SET
+                user_agent = '{$user_agent}',
+                browser = '" . $browser['type'] . "',
+                version = '" . $browser['ver'] . "',
+                platform = '" . $platform . "'";
+
+            $res = DB_query($sql);
+            $ua_id = DB_insertId();
+        }
         DB_unlockTable($_TABLES['gus_user_agents']);
 	}
 	
