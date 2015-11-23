@@ -50,8 +50,8 @@ if (!SEC_inGroup('Root')) {
 
 $pi_name = 'gus';
 $pi_version = plugin_chkVersion_gus();
-$gl_version = '1.4.1';
-$pi_url = 'http://code.google.com/p/geeklog/';
+$gl_version = '2.1.0';
+$pi_url = 'https://github.com/Geeklog-Plugins/gus';
 
 $_FEATURE = array(
 	'gus.admin' => 'GUS Admin',

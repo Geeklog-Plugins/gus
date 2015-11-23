@@ -239,7 +239,7 @@ function ip_to_hostname($ip) {
  * @return string    plugin version
 */
 function plugin_chkVersion_gus() {
-	return '1.7.2';
+	return '1.7.3';
 }
 
 // Add the CSS file if we are browsing a GUS page
@@ -348,7 +348,8 @@ function plugin_cclabel_gus() {
 		$retval = array(
 			$LANG_GUS00['GUS_title'],
 			$_CONF['site_admin_url'] . '/plugins/gus/index.php',
-			$_CONF['site_url'] . '/gus/images/' . $_GUS_IMG_name
+			plugin_geticon_gus(), 
+            'tools'
 		);
 	}
 	
@@ -370,7 +371,7 @@ function plugin_getadminoption_gus() {
 	global $LANG_GUS_blocks, $_CONF;
 
 	if (SEC_hasRights('gus.admin')) {
-		return array($LANG_GUS_blocks['admin_menu_title'], $_CONF['site_admin_url'] . '/plugins/gus/index.php', 0);
+		return array($LANG_GUS_blocks['admin_menu_title'], $_CONF['site_admin_url'] . '/plugins/gus/index.php', 0, 'tools');
 	}
 }
 
@@ -476,6 +477,18 @@ function GUS_doUpgrades($current_gus_version) {
 
 			case '1.7.1':
 				$current_gus_version = '1.7.2';
+				break;
+
+			case '1.7.2':
+				$_SQL = array();
+				
+				require_once $_CONF['path'] . 'plugins/gus/sql/updates/gus_1.7.2_to_1.7.3.php';
+
+				foreach ($_SQL as $sql) {
+					DB_query($sql);
+				}
+            
+				$current_gus_version = '1.7.3';
 				break;
 				
 			default:
