@@ -648,6 +648,7 @@ $retval = COM_siteHeader ('menu', $LANG_GUS_admin['admin']);
 $retval .= COM_startBlock($LANG_GUS_admin['admin'] . ' [v' . plugin_chkVersion_gus() .']', $readme_url,
                                             COM_getBlockTemplate('_admin_block', 'header'));
 
+require_once $_CONF['path'] . '/system/lib-admin.php';
 $retval .= ADMIN_createMenu($menu_arr, $LANG_GUS_admin['instructions'], plugin_geticon_gus());
     
 $display = $retval . $display;
