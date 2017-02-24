@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS {$_TABLES['gus_userstats']} (
   host VARCHAR(75) DEFAULT '',
   page VARCHAR(50) DEFAULT '',
   username VARCHAR(16) DEFAULT '',
-  referer VARCHAR(255) DEFAULT '',
+  referer VARCHAR(191) DEFAULT '',
   request VARCHAR(10) DEFAULT '',
   query_string VARCHAR(255) DEFAULT '',
   `date` DATE DEFAULT NULL,

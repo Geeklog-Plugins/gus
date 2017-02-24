@@ -239,7 +239,7 @@ function ip_to_hostname($ip) {
  * @return string    plugin version
 */
 function plugin_chkVersion_gus() {
-	return '1.7.3';
+	return '1.7.4';
 }
 
 // Add the CSS file if we are browsing a GUS page
@@ -489,6 +489,18 @@ function GUS_doUpgrades($current_gus_version) {
 				}
             
 				$current_gus_version = '1.7.3';
+				break;
+                
+			case '1.7.3':
+				$_SQL = array();
+				
+				require_once $_CONF['path'] . 'plugins/gus/sql/updates/gus_1.7.3_to_1.7.4.php';
+
+				foreach ($_SQL as $sql) {
+					DB_query($sql);
+				}
+            
+				$current_gus_version = '1.7.4';
 				break;
 				
 			default:
