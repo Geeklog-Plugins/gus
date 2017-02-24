@@ -528,6 +528,7 @@ function plugin_uninstall_gus() {
 						'gus_ignore_page',
 						'gus_ignore_ua',
 						'gus_ignore_host',
+                        'gus_ignore_referrer',
 						'gus_vars' 
 	);
 
