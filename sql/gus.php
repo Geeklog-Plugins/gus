@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS {$_TABLES['gus_ignore_user']} (
 
 $_SQL[] = "
 CREATE TABLE IF NOT EXISTS {$_TABLES['gus_ignore_page']} (
-  page VARCHAR(255) NOT NULL DEFAULT '',
+  page VARCHAR(191) NOT NULL DEFAULT '',
   PRIMARY KEY (page)
 )";
 
