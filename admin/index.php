@@ -92,7 +92,8 @@ function GUS_admin_load_ignore_tables() {
 	$rec = DB_query("SELECT ua FROM {$_TABLES['gus_ignore_ua']}", 1);
 	
 	while ($row = DB_fetchArray($rec, FALSE)) {
-		$_GUS_UA_IGNORE[] = $row['ua'];
+        //$_GUS_UA_IGNORE[] = $row['ua'];
+		$_GUS_UA_IGNORE[] = stripslashes($row['ua']);
 	}
 	
 	$rec = DB_query("SELECT host FROM {$_TABLES['gus_ignore_host']}", 1);
@@ -104,7 +105,8 @@ function GUS_admin_load_ignore_tables() {
 	$rec = DB_query("SELECT referrer FROM {$_TABLES['gus_ignore_referrer']}", 1);
 	
 	while ($row = DB_fetchArray($rec, FALSE)) {
-		$_GUS_REFERRER_IGNORE[] = $row['referrer'];
+		//$_GUS_REFERRER_IGNORE[] = $row['referrer'];
+        $_GUS_REFERRER_IGNORE[] = stripslashes(htmlentities(urldecode($row['referrer'])));
 	}
 }
 
@@ -299,7 +301,8 @@ function GUS_get_referrer_counts() {
 	
 	while ($row = DB_fetchArray($result, FALSE)) {
 		$list .= 'us.referer LIKE \''
-			  .  str_replace('%25', '%', urlencode($row['referrer']))
+			  // .  str_replace('%25', '%', urlencode($row['referrer']))
+              .  str_replace('%25', '%', $row['referrer'])
 			  .  '\'';
 		
 		if ($count > 1) {
@@ -377,7 +380,8 @@ if ($action === 'capture_on') {
 	} else if ($newuseragent != '') {
 		$table = $_TABLES['gus_ignore_ua'];
 		$field = 'ua';
-		$data  = substr(trim($newuseragent), 0, 128);
+		//$data  = substr(trim($newuseragent), 0, 128);
+        $data  = addslashes(substr(trim($newuseragent), 0, 128));
 	} else if ($newhost != '') {
 		$table = $_TABLES['gus_ignore_host'];
 		$field = 'host';
@@ -385,7 +389,8 @@ if ($action === 'capture_on') {
 	} else if ($newreferrer != '') {
 		$table = $_TABLES['gus_ignore_referrer'];
 		$field = 'referrer';
-		$data  = substr(trim( $newreferrer), 0, 128);
+		//$data  = substr(trim( $newreferrer), 0, 128);
+        $data  = urlencode(addslashes(substr(trim( $newreferrer), 0, 128)));
 	}
 	
 	$data = addslashes($data);
@@ -442,7 +447,8 @@ if ($action === 'capture_on') {
 	$list = 'WHERE ';
 	
 	while ($row = DB_fetchArray($result, FALSE)) {
-		$list .= 'us.referer LIKE \'' . str_replace('%25', '%', urlencode($row['referrer'])) . '\'';
+		//$list .= 'us.referer LIKE \'' . str_replace('%25', '%', urlencode($row['referrer'])) . '\'';
+        $list .= 'us.referer LIKE \'' . str_replace('%25', '%', $row['referrer']) . '\'';
 		
 		if ($count > 1) {
 			$list .= 'OR ';

@@ -156,7 +156,9 @@ function GUS() {
 
 			// check the referrer
 			if (isset($_SERVER['HTTP_REFERER']) AND ($_SERVER['HTTP_REFERER'] != '')) {
-				$referrer = $_SERVER['HTTP_REFERER'];
+				//$referrer = $_SERVER['HTTP_REFERER'];
+                $referrer = urlencode(addslashes($_SERVER['HTTP_REFERER']));
+                
 				$rec = DB_query("SELECT COUNT(*) AS ignored
 									FROM {$_TABLES['gus_ignore_referrer']}
 									WHERE '{$referrer}' LIKE referrer
