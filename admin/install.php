@@ -37,15 +37,15 @@ require_once $_CONF['path'] . 'plugins/gus/functions.inc';
 // Only let Root users access this page
 if (!SEC_inGroup('Root')) {
 	// Someone is trying to illegally access this page
-	COM_errorLog("Someone has tried to illegally access the Stats install/uninstall page.  "
+	COM_accessLog("Someone has tried to illegally access the Stats install/uninstall page.  "
 		. "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
 
-	echo COM_siteHeader();
-	echo COM_startBlock($LANG_ST00['access_denied']);
-	echo $LANG_ST00['access_denied_msg'];
-	echo COM_endBlock();
-	echo COM_siteFooter(true);
-	exit;
+    $display = COM_createHTMLDocument(
+        COM_showMessageText($LANG_GUS00['access_denied_msg'], $MESSAGE[30]),
+        array('pagetitle' => $MESSAGE[30])
+    );
+    COM_output($display);
+    exit;
 }
 
 $pi_name = 'gus';

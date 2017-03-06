@@ -36,14 +36,14 @@ function GUS_HasAccess($allow_anon = TRUE) {
 		return TRUE;
 	}
 
-	COM_errorLog("Someone has tried to illegally access a GUS stats page.  "
+	COM_accessLog("Someone has tried to illegally access a GUS stats page.  "
 		. "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
 
-	echo COM_siteHeader();
-	echo COM_startBlock($LANG_GUS00['access_denied']);
-	echo $LANG_GUS00['access_denied_msg'];
-	echo COM_endBlock();
-	echo COM_siteFooter(TRUE);
+    $display = COM_createHTMLDocument(
+        COM_showMessageText($LANG_GUS00['access_denied_msg'], $MESSAGE[30]),
+        array('pagetitle' => $MESSAGE[30])
+    );
+    COM_output($display);
 
 	return FALSE;
 }

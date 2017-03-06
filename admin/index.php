@@ -37,15 +37,15 @@ require_once $_CONF['path_html'] . '/gus/include/sql.inc';
 // Only let admin users access this page
 if (!SEC_inGroup('Root') AND !SEC_hasRights('gus.view')) {
 	// Someone is trying to illegally access this page
-	COM_errorLog("Someone has tried to illegally access the GUS admin page.  "
+	COM_accessLog("Someone has tried to illegally access the GUS admin page.  "
 		. "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
-	$display = COM_siteHeader()
-			 . COM_startBlock($LANG_GUS00['access_denied'])
-			 . $LANG_GUS00['access_denied_msg']
-			 . COM_endBlock()
-			 . COM_siteFooter(TRUE);
-	echo $display;
-	exit;
+        
+    $display = COM_createHTMLDocument(
+        COM_showMessageText($LANG_GUS00['access_denied_msg'], $MESSAGE[30]),
+        array('pagetitle' => $MESSAGE[30])
+    );
+    COM_output($display);
+    exit;
 }
 
 $action = isset($_POST['action']) ? COM_applyFilter($_POST['action']) : '';
