@@ -147,7 +147,7 @@ function GUS_create_form($name, $id) {
 	
 	$form = '<form method=POST action="' . $_SERVER['PHP_SELF'] . '">'
 		  . '<input type=submit value="' . $LANG_GUS_admin['add'] . '" name=action>'
-		  . '&nbsp;&nbsp;<input type=text size=32 name="' . $name . '">&nbsp;&nbsp;'
+		  . '&nbsp;&nbsp;<input type="text" size="32" name="' . $name . '">&nbsp;&nbsp;'
 		  . '<input type=submit value="' . $LANG_GUS_admin['remove'] . '" name=action>'
 		  . '<input type=hidden value=' . $id . ' name=selected_tab>'
 		  . '</form>';
@@ -361,7 +361,8 @@ if ($action === 'capture_on') {
 	$newip        = isset($_POST['newip']) ? COM_applyFilter($_POST['newip']) : '';
 	$newuser      = isset($_POST['newuser']) ? COM_applyFilter($_POST['newuser']) : '';
 	$newpage      = isset( $_POST['newpage'] ) ? COM_applyFilter($_POST['newpage']) : '';
-	$newuseragent = isset($_POST['newuseragent']) ? COM_applyFilter($_POST['newuseragent']) : '';
+	//$newuseragent = isset($_POST['newuseragent']) ? COM_applyFilter($_POST['newuseragent']) : '';
+    $newuseragent  = isset($_POST['newuseragent']) ? strip_tags(COM_stripslashes($_POST['newuseragent'])) : '';
 	$newhost      = isset($_POST['newhost']) ? COM_applyFilter($_POST['newhost']) : '';
 	$newreferrer  = isset($_POST['newreferrer']) ? COM_applyFilter($_POST['newreferrer']) : '';
 
