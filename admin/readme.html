@@ -26,10 +26,10 @@
 </head>
 <body bgcolor="#ffffff">
 
-<h2>Geeklog Usage Stats Plugin [v1.7.3]</h2>
+<h2>Geeklog Usage Stats Plugin [v1.7.4]</h2>
 Developer Website: <a href="https://github.com/Geeklog-Plugins/gus" target="_blank">GUS Plugin Repository</a><br>
-Current Maintainers:<a href="https://github.com/orgs/Geeklog-Plugins/people" target="_blank">Geeklog Community Members</a><br>
-Released: November 23, 2015
+Current Maintainers: <a href="https://github.com/orgs/Geeklog-Plugins/people" target="_blank">Geeklog Community Members</a><br>
+Released: March 8, 2017
 
 <h3>Table of Contents</h3>
 
@@ -94,6 +94,11 @@ How about the price of a <b>pizza</b> or even just <b>a beer</b>?  Check out the
 
 <a name=version></a><h3>Version History</h3>
 <ul>
+	<li>v1.7.4 [8 Mar 2017]<ul> 
+        <li><span class=fix>[fix]</span> Fixed adding and removing ignore user agents with semicolons</li>
+		<li><span class=fix>[fix]</span> gus_ignore_referrer table will be removed when GUS is uninstalled</li>
+		<li><span class=new>[new]</span> Now supports UTF8mb4 MySQL collation</li>
+	</ul></li>
 	<li>v1.7.3 [23 Nov 2015]<ul> 
         <li><span class=fix>[fix]</span> Fixed sql error which could result from an attempt to create a duplicate user agent</li>
 		<li><span class=fix>[fix]</span> Fixed display bug with Admin interface</li>
@@ -283,7 +288,7 @@ How about the price of a <b>pizza</b> or even just <b>a beer</b>?  Check out the
 <ul>
     <li>Andy Maloney for writing and maintaining the GUS plugin up to and including version 1.7.0</li>
 	<li>Tom Willett and John Hughes for writing the original stats plugin</li>
-	<li>Brian Bevel for help testing and the slick icons [<a href="http://www.deliciousironing.com">www.deliciousironing.com</a>]</li>
+	<li>Brian Bevel for help testing and the slick icons</li>
 	<li>Rick Robinson, Richard Rodriguez, Georg Kowallek, Joseph Anthony, and Tom Willett for help testing the pre-release versions of GUS 1.0.0</li>
 	<li>All the others listed in the release notes for reporting problems or making suggestions</li>
 </ul>
