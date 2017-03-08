@@ -261,5 +261,5 @@ if ($action === 'install') {
 }
 
 $display .= COM_endBlock()
-		 .  COM_siteFooter(TRUE);
+		 .  COM_siteFooter();
 echo $display;
