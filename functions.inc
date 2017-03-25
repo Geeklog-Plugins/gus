@@ -102,11 +102,13 @@ function GUS() {
 	
 			// remove extra path from the page name if necessary
 			$page = $_SERVER['SCRIPT_NAME'];
-			$len = strlen($_GUS_VARS['parsed_site_url']['path']);
-			
-			if (strncmp($page, $_GUS_VARS['parsed_site_url']['path'], $len) === 0) {
-				$page = substr($page, $len + 1);
-			}
+            if (isset($_GUS_VARS['parsed_site_url']['path'])) {
+                $len = strlen($_GUS_VARS['parsed_site_url']['path']);
+                
+                if (strncmp($page, $_GUS_VARS['parsed_site_url']['path'], $len) === 0) {
+                    $page = substr($page, $len + 1);
+                }
+            }
 
 			$rec = DB_query("SELECT COUNT(*) AS ignored
 								FROM {$_TABLES['gus_ignore_page']}
