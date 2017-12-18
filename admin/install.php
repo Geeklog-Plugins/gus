@@ -221,8 +221,7 @@ function GUS_createDatabaseStructures() {
 /* 
 * Main Function
 */
-$display = COM_siteHeader()
-		 . COM_startBlock( $LANG_GUS00['install_header'] );
+$display = COM_startBlock( $LANG_GUS00['install_header'] );
 $action = isset($_GET['action']) ? COM_applyFilter($_GET['action']) : '';
 
 if ($action === 'install') {
@@ -240,26 +239,13 @@ if ($action === 'install') {
 			<a href=\"{$readme_url}#config\">README file</a>."
 				 .  "<p>If you would like to support development of this plugin, there are some suggestions in the  
 			<a href=\"{$readme_url}#you\">README file</a>.";
-
-		// check for old stats to see if we should add an import link
-		if ($_ST_plugin_name != '') {
-			$stats_version = DB_getItem($_TABLES['plugins'], 'pi_version', "pi_name = '{$_ST_plugin_name}'");
-			$display .= "<hr>I notice you have the stats plugin version {$stats_version} installed as '{$_ST_plugin_name}'. ";
-			
-			if ($stats_version !== '1.3') {
-				$display .= "<p>If you had version 1.3 installed, I could import its data. 
-					If you update this in the future, you can import its data from 
-					the <a href=\"$admin_url\">admin page</a>.";
-			} else {
-				$display .= "<p>You may import its data into GUS using the <a href=\"{$import_url}\">import page</a>.";
-			}
-		}
 	} else {
 		plugin_uninstall_gus();
 		$display .= 'For some reason, installation failed.  Check your error logs.';
 	}
 }
 
-$display .= COM_endBlock()
-		 .  COM_siteFooter();
-echo $display;
+$display .= COM_endBlock();
+$display = COM_createHTMLDocument($display, array('what' => 'menu')); 
+
+COM_output($display);

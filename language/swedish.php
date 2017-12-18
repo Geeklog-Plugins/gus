@@ -91,8 +91,8 @@ $LANG_GUS00 = array (
 $LANG_GUS_blocks = array(
 	'admin_menu_title'	=> 'GUS',
 	
-	'user_menu_title'	=> 'GUS',
-	'today'				=> 'idag'
+	'user_menu_latest'	=> 'GUS',
+	'user_menu_today'	=> 'idag'
 );
 	
 // Who's Online

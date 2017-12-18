@@ -26,8 +26,8 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-// translate the option to something we can pass directly to COM_siteHeader()
-$_GUS_CONF['show_left_blocks'] = $_GUS_CONF['show_left_blocks'] ? '' : 'none';
+// translate the option to something we can pass directly to COM_createHTMLDocument()
+$_GUS_CONF['show_left_blocks'] = $_GUS_CONF['show_left_blocks'] ? 'menu' : 'none';
 
 // some standard GET options
 $year  = isset($_GET['year'])  ? COM_applyFilter($_GET['year'])  : '';
@@ -233,7 +233,7 @@ function GUS_template_get_referrer_data($referrer, $check_hide = FALSE) {
 function GUS_template_start($page = 'table.thtml') {
 	global $LANG_GUS00, $_CONF, $_GUS_IMG_small_name;
 	
-	$template = new Template($_CONF['path'] . 'plugins/gus/templates');
+    $template = COM_newTemplate(CTL_plugin_templatePath('gus'));
 	$template->set_file(array(
 		'header' => 'header.thtml',
 		'page'   => $page,

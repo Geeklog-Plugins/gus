@@ -129,6 +129,5 @@ if (file_exists(GUS_cachefile()) AND ($today != $month . $year)) {
 	}
 }
 
-echo COM_siteHeader($_GUS_CONF['show_left_blocks']);
-echo $display;
-echo COM_siteFooter($_GUS_CONF['show_right_blocks']);
+$display = COM_createHTMLDocument($display, array('what' => $_GUS_CONF['show_left_blocks'], 'rightblock' => $_GUS_CONF['show_right_blocks'])); 
+COM_output($display);

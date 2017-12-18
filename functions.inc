@@ -224,6 +224,10 @@ function ip_to_hostname($ip) {
 		case 'gethostbyaddr':
 			return @gethostbyaddr($ip);
 			break;
+            
+		case '':
+            // Host Lookup disabled
+			break;
 			
 		default:
 			COM_errorLog("Invalid setting for 'host_lookup' in config.php [{$_GUS_CONF['host_lookup']}]");
@@ -243,7 +247,7 @@ function ip_to_hostname($ip) {
  * @return string    plugin version
 */
 function plugin_chkVersion_gus() {
-	return '1.7.4';
+	return '1.7.5';
 }
 
 // Add the CSS file if we are browsing a GUS page
@@ -387,16 +391,29 @@ function plugin_getuseroption_gus() {
 	global $LANG_GUS_blocks, $_CONF, $_GUS_user;
 
 	if (SEC_hasRights('gus.view') AND ($_GUS_user == 1)) {
-		$title = $LANG_GUS_blocks['user_menu_title'];
 
-		// Micro-hack:
-		//	We're only supposed to return one thing, but we close the anchor and open another
-		//	in order to return two...
-		$title .= '</a> <a href="' . $_CONF['site_url'] . '/gus/day.php' . '">['
-			   .  $LANG_GUS_blocks['today'] . ']';
-
-		return array($title, $_CONF['site_url'] . '/gus/index.php?page=latest', 0);
+		$menuitems[] = array($LANG_GUS_blocks['user_menu_latest'], $_CONF['site_url'] . '/gus/index.php?page=latest', 0);
+        $menuitems[] = array($LANG_GUS_blocks['user_menu_today'], $_CONF['site_url'] . '/gus/day.php', 0);
+        
+        return $menuitems;
 	}
+}
+
+/**
+* Clears Gus cache from Geeklog Admin
+*
+*/
+function plugin_clearcache_gus() {
+	global $_CONF;
+    
+    // Feature only exists in Geeklog v2.2.0 and later
+    if (function_exists("COM_cleanDirectory")) {
+        $cfiles = $_CONF['path_html'] . 'gus/cache/';
+        COM_cleanDirectory($cfiles);
+        
+        return true;
+    }
+
 }
 
 // upgrade to this version of GUS
@@ -506,6 +523,11 @@ function GUS_doUpgrades($current_gus_version) {
             
 				$current_gus_version = '1.7.4';
 				break;
+                
+			case '1.7.4':
+            
+				$current_gus_version = '1.7.5';
+				break;                
 				
 			default:
 				$done = TRUE;
@@ -581,33 +603,6 @@ function plugin_uninstall_gus() {
 	return TRUE;
 }
 
-//////////////////////////////////////////////////////////////////////////////////
-//  STATS Functions                                                             //
-//////////////////////////////////////////////////////////////////////////////////
-
-// Check for the 'stats' plugin, which may be installed under a different name
-//	return true/false
-function GUS_checkStatsInstall() {
-	global	$_CONF, $_TABLES, $_DB_table_prefix, $_ST_plugin_name;
-	
-	if (empty($_ST_plugin_name)) {
-		$_ST_plugin_name = DB_getItem($_TABLES['vars'], 'value', "name = 'stats_name'");
-		
-		if (empty($_ST_plugin_name)) {
-			return FALSE;
-		}
-
-		// include the config file so we get the $_TABLE vars
-		require_once $_CONF['path'] . 'plugins/' . $_ST_plugin_name . '/config.php';
-		
-		// now that we have the table names, check that the old userstats table actually exists
-		$res = DB_query("SELECT uid FROM {$_TABLES['userstats']} LIMIT 1", 1);
-		
-		return !DB_error();
-	} else {
-		return TRUE;
-	}
-}
 
 // Because the referrers are stored encoded, we need our URLs to look similar for SQL comparison
 //	- make it look like the referrers by encoding it

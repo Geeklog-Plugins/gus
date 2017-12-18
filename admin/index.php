@@ -622,28 +622,6 @@ $display .= "<hr><h4>{$LANG_GUS_admin['remove_data']}</h4>"
 			<input type='hidden' value='remove_data' name='action'>
 			</form>";
 
-// fetch the 'imported' var since it may have changed
-$rec = DB_query("SELECT value FROM {$_TABLES['gus_vars']} WHERE name = 'imported' LIMIT 1", 1);
-$row = DB_fetchArray($rec, FALSE);
-$_GUS_VARS['imported'] = $row['value'];
-
-// check for old stats to see if we should add an import link
-if (GUS_checkStatsInstall() AND ($_ST_plugin_name != '') AND ($_GUS_VARS['imported'] < 3)) {
-	$import_url    = $_CONF['site_admin_url'] . '/plugins/gus/import.php';
-	$stats_version = DB_getItem( $_TABLES['plugins'], 'pi_version', "pi_name = '{$_ST_plugin_name}'" );
-	$display .= "<hr><h4>{$LANG_GUS_admin['import_data']}</h4>"
-			 .  "I notice you have the stats plugin version {$stats_version} installed as '{$_ST_plugin_name}'. ";
-	
-	if ($stats_version !== '1.3') {
-		$display .= "<p>If you had version 1.3 installed, I could import its data. 
-			If you update this in the future, you can import its data from 
-			the <a href=\"{$admin_url}\">admin page</a>.";
-	} else {	
-		$display .= "<p>You may import its data into GUS using the <a href=\"{$import_url}\">import page</a>.";
-	}
-}
-
-
 $readme_url = $_CONF['site_admin_url'] . '/plugins/gus/readme.html#config';
 
 $menu_arr = array (
@@ -651,7 +629,6 @@ $menu_arr = array (
                       'text' => $LANG_ADMIN['admin_home'])
 );
 
-$retval = COM_siteHeader ('menu', $LANG_GUS_admin['admin']);
 $retval .= COM_startBlock($LANG_GUS_admin['admin'] . ' [v' . plugin_chkVersion_gus() .']', $readme_url,
                                             COM_getBlockTemplate('_admin_block', 'header'));
 
@@ -661,9 +638,9 @@ $retval .= ADMIN_createMenu($menu_arr, $LANG_GUS_admin['instructions'], plugin_g
 $display = $retval . $display;
 
 $display .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
-$display .= COM_siteFooter();
 
-echo $display;
+$display = COM_createHTMLDocument($display, array('what' => 'menu', 'pagetitle' => $LANG_GUS_admin['admin'])); 
+COM_output($display);
 
 ?>
 

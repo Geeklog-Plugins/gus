@@ -150,24 +150,11 @@ if (($curpage != $num_pages) AND file_exists(GUS_cachefile())) {
 		$comments += $row['num_comments'];
 		$T->set_var('comments', $row['num_comments']);
 		
-		if ($_GUS_phplinks == 1) {          
-			$outer_frame = DB_getItem($_TABLES['plsettings'], 'OuterFrame',"ID = '1' LIMIT 1" );
-			
-			if ($outer_frame === 'N') {
-				$result = DB_query("SELECT COUNT(*) AS num_links FROM {$temp_table['name']} WHERE page='phplinks/out.php'");
-				$row = DB_fetchArray($result, FALSE);
-				$linksf += $row['num_links'];    
-			} else {
-				$result = DB_query("SELECT COUNT(*) AS num_links FROM {$temp_table['name']} WHERE page='phplinks/out_frame.php'");
-				$row = DB_fetchArray($result, FALSE);
-				$linksf += $row['num_links'];
-			}
-		} else {
-			$result = DB_query("SELECT COUNT(*) AS num_links FROM {$temp_table['name']}
-								WHERE page LIKE '%portal.php' AND query_string <> ''");
-			$row = DB_fetchArray($result, FALSE);
-			$linksf += $row['num_links'];    
-		}
+        // Look for Links Plugin use of portal.php
+        $result = DB_query("SELECT COUNT(*) AS num_links FROM {$temp_table['name']}
+                            WHERE page LIKE '%portal.php' AND query_string <> ''");
+        $row = DB_fetchArray($result, FALSE);
+        $linksf += $row['num_links'];    
 		
 		$T->set_var(array(
 			'linksf' => $row['num_links'],
@@ -214,6 +201,5 @@ if (($curpage != $num_pages) AND file_exists(GUS_cachefile())) {
 	}
 }
 
-echo COM_siteHeader($_GUS_CONF['show_left_blocks']);
-echo $display;
-echo COM_siteFooter($_GUS_CONF['show_right_blocks']);
+$display = COM_createHTMLDocument($display, array('what' => $_GUS_CONF['show_left_blocks'], 'rightblock' => $_GUS_CONF['show_right_blocks'])); 
+COM_output($display);

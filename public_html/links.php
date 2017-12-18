@@ -76,17 +76,8 @@ if (file_exists(GUS_cachefile()) AND ($today != $day . $month . $year)) {
 	$date_compare = GUS_get_date_comparison('date', $year, $month, $day);
 	$sql = "SELECT COUNT( query_string ) AS cnt, query_string FROM {$_TABLES['gus_userstats']} ";
 
-	if ($_GUS_phplinks == 1) {    
-		$outer_frame = DB_getItem($_TABLES['plsettings'], 'OuterFrame',"ID = '1'");
-		
-		if ($outer_frame === 'N') {
-			$sql .= "WHERE page='phplinks/out.php' ";
-		} else {
-			$sql .= "WHERE page='phplinks/out_frame.php' ";
-		}
-	} else {
-		$sql .= "WHERE page LIKE '%portal.php' AND query_string <> '' ";
-	}
+    // Look for Links Plugin use of portal.php
+    $sql .= "WHERE page LIKE '%portal.php' AND query_string <> '' ";
 
 	$sql .= "AND {$date_compare} GROUP BY query_string ORDER BY cnt DESC";
 	$rec   = DB_query($sql);
@@ -103,60 +94,23 @@ if (file_exists(GUS_cachefile()) AND ($today != $day . $month . $year)) {
 		$query_string = urldecode($A['query_string']);
 		$query1 = explode('&', $query_string);
 		
-		if ($_GUS_phplinks == 1) {    
-			$outer_frame = DB_getItem($_TABLES['plsettings'], 'OuterFrame',"ID = '1'");
-			
-			if ($outer_frame === 'N') {
-				$query = explode('=', $query1[1]);
-				$id = $query[1];
-				
-				if (!empty($id)) {
-					$sql = "SELECT SiteName FROM {$_TABLES['pllinks']} WHERE id=$id";
-					$row = DB_fetchArray(DB_query($sql));
-					$title = $row[SiteName];
-				}
-				
-				$T->set_var(array(
-					'colclass' => 'col_right',
-					'data'     => $A['cnt'],
-				));
-				$T->parse('CBlock', 'COLUMN', FALSE);
-				$T->set_var('data', '<a href="' . $_CONF['site_url'] . '/phplinks/out.php?&ID=' . $id . '">' . $title . "</a>");
-			} else {
-				$query = explode('=', $query1[1]);
-				$id = $query[1];
-				
-				if (!empty($id)) {
-					$sql = "select SiteName from {$_TABLES['pllinks']} where id=$id";
-					$row = DB_fetchArray(DB_query($sql));
-					$title = $row[SiteName];
-				}
-				
-				$T->set_var(array(
-					'colclass' => 'col_right',
-					'data'     => $A['cnt'],
-				));
-				$T->parse('CBlock', 'COLUMN', FALSE);
-				$T->set_var('data', '<a href="' . $_CONF['site_url'] . '/phplinks/out_frame.php?&ID=' . $id . '">' . $title . '</a>');
-			}
-		} else {
-			$query = explode('=', $query1[0]);
-			
-			if ($query[0] === 'url') {
-				$title = $query[1];
-			} elseif ($query[0] === 'what') {
-				$query = explode('=', $query1[1]);
-				$id = $query[1];
-				$title = DB_getItem($_TABLES['links'], 'url', "lid = '{$id}'");
-			}
-			
-			$T->set_var(array(
-				'colclass' => 'col_right',
-				'data'     => $A['cnt'],
-			));
-			$T->parse('CBlock', 'COLUMN', FALSE);
-			$T->set_var('data', '<a href="' . $title . '" target="_blank">' . $title . "</a>");
-		}
+
+        $query = explode('=', $query1[0]);
+        
+        if ($query[0] === 'url') {
+            $title = $query[1];
+        } elseif ($query[0] === 'what') {
+            $query = explode('=', $query1[1]);
+            $id = $query[1];
+            $title = DB_getItem($_TABLES['links'], 'url', "lid = '{$id}'");
+        }
+        
+        $T->set_var(array(
+            'colclass' => 'col_right',
+            'data'     => $A['cnt'],
+        ));
+        $T->parse('CBlock', 'COLUMN', FALSE);
+        $T->set_var('data', '<a href="' . $title . '" target="_blank">' . $title . "</a>");
 
 		$T->set_var('colclass', 'col_left');
 		$T->parse('CBlock', 'COLUMN', TRUE);
@@ -180,6 +134,5 @@ if (file_exists(GUS_cachefile()) AND ($today != $day . $month . $year)) {
 	}
 }
 
-echo COM_siteHeader($_GUS_CONF['show_left_blocks']);
-echo $display;
-echo COM_siteFooter($_GUS_CONF['show_right_blocks']);
+$display = COM_createHTMLDocument($display, array('what' => $_GUS_CONF['show_left_blocks'], 'rightblock' => $_GUS_CONF['show_right_blocks'])); 
+COM_output($display);

@@ -31,8 +31,8 @@
 
 require_once '../lib-common.php';
 
-$display = COM_siteHeader()
-		 . "
+$display = 
+"
 	<div align=center><h1>Privacy Policy</h1></div>
 	<i>{$_CONF['site_name']}</i> has created this privacy policy in order to demonstrate our commitment to privacy.
 	The following discloses the information gathering and dissemination practices for this website.
@@ -102,6 +102,7 @@ $display = COM_siteHeader()
 		 . "
 	<h2>Changes</h2>
 	<i>{$_CONF['site_name']}</i> may change these policies at any time without written notice to users. The changes will become effective upon posting of the changes to the website.
-"
-		 . COM_siteFooter(true);
-echo $display;
+";
+
+$display = COM_createHTMLDocument($display, array('what' => 'menu', 'pagetitle' => 'Privacy Policy')); 
+COM_output($display);

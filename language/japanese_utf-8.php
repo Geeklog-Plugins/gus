@@ -92,8 +92,8 @@ $LANG_GUS00 = array (
 $LANG_GUS_blocks = array(
 	'admin_menu_title'	=> '訪問者統計',
 	
-	'user_menu_title'	=> '訪問者統計',
-	'today'				=> '今日'
+	'user_menu_latest'	=> '訪問者統計',
+	'user_menu_today'	=> '今日'
 );
 	
 // Who's Online

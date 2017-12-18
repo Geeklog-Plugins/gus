@@ -29,6 +29,9 @@
 // +---------------------------------------------------------------------------+
 //
 
+// For Removing Stats Data
+$_GUS_CONF['keep_stats_default'] = 30; // In days
+
 // GUS Who's Online Block
 // Executes the function phpblock_gusstats()
 $_GUS_CONF['block_enable'] = true; // True or false
@@ -38,9 +41,11 @@ $_GUS_CONF['block_topic_option'] = TOPIC_HOMEONLY_OPTION; // TOPIC_ALL_OPTION, T
 $_GUS_CONF['block_topic'] = array(); // The topics the block will appear for if the Topic Options is set to 'Select Topics'.
 $_GUS_CONF['block_permissions'] = array (2, 2, 0, 0); // 0 = No Access, 2 = Read-Only for (Owner, Group, Member, Anonymous)
 
-// The method to use for host name lookup - can be 'host', 'nslookup', or 'gethostbyaddr'
+// The method to use for host name lookup (also used to determine country of visitor) - can be 'host', 'nslookup', or 'gethostbyaddr'
 // If your system is set up such that you cannot execute shell commands, use 'gethostbyaddr'.
-$_GUS_CONF['host_lookup'] = 'host';
+// Setting to an empty string '' disables host lookup
+// Works only with IPv4 addresses (not IPv6)
+$_GUS_CONF['host_lookup'] = 'gethostbyaddr';
 
 // sets the timeout for host name lookup using 'host' or 'nslookup' [minimum 1 second]
 $_GUS_CONF['host_lookup_timeout'] = 1;
@@ -89,9 +94,6 @@ $_GUS_user = 1;
 
 // Set to 1 to extend the regular Geeklog stats page to include 'Unique Visitors' and 'Registered Users'
 $_GUS_stats = 1;
-
-// Set to 1 to enable phplinks integration
-$_GUS_phplinks = 0;
 
 // Limit on number of lines to display on certain stats reports
 $_GUS_limit = 25;

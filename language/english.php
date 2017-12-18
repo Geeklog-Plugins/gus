@@ -93,8 +93,8 @@ $LANG_GUS00 = array (
 $LANG_GUS_blocks = array(
 	'admin_menu_title'	=> 'GUS',
 	
-	'user_menu_title'	=> 'GUS',
-	'today'				=> 'today'
+	'user_menu_latest'	=> 'All Stats',
+	'user_menu_today'	=> "Today's Stats"
 );
 	
 // Who's Online

@@ -301,6 +301,6 @@ $display = '<div class="gus">'
 		 . '<br>'
 		 . $T->finish($T->get_var('page_footer'))
 		 . '</div>';
-echo COM_siteHeader($_GUS_CONF['show_left_blocks']);
-echo $display;
-echo COM_siteFooter($_GUS_CONF['show_right_blocks']);
+
+$display = COM_createHTMLDocument($display, array('what' => $_GUS_CONF['show_left_blocks'], 'rightblock' => $_GUS_CONF['show_right_blocks'])); 
+COM_output($display);
