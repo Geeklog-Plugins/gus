@@ -316,31 +316,24 @@ function plugin_getmenuitems_gus() {
 }
 
 /**
-* Shows the statistics for the stats plugin on stats.php.  If
-* $showsitestats is 1 then we are to only print the overall stats in the 'site
-* statistics' box otherwise we show the detailed stats for the stats
-*
-* @showsitestate        int         Flag to let us know which stats to get
+* Shows the statistics for the stats plugin on stats.php
 */
-function plugin_showstats_gus($showsitestats) {
-	global $_TABLES, $LANG_GUS_builtin_stats, $_GUS_stats;
-	
-	if (($showsitestats == 1) AND ($_GUS_stats == 1)) {
+function plugin_statssummary_gus()
+{
+    global $_TABLES, $LANG_GUS_builtin_stats, $_GUS_stats;
+    
+	if ($_GUS_stats == 1) {
 		$rec = DB_query("SELECT COUNT( DISTINCT ip ) AS visitors FROM {$_TABLES['gus_userstats']}");
 		$row = DB_fetchArray($rec, FALSE);
-		$retval = "<table border = '0' width='100%' cellspacing='0' cellpadding='0'>"
-				. "<tr><td>" . $LANG_GUS_builtin_stats['unique_visitors'] . "</td>"
-				. "<td align='right'>" . $row['visitors'] . "&nbsp;&nbsp </td></tr>";
+        $siteStats[] = array($LANG_GUS_builtin_stats['unique_visitors'], $row['visitors']);
 		
 		$total_stats = DB_count($_TABLES['users']);
-		$retval .= "<tr><td>" . $LANG_GUS_builtin_stats['users'] . "</td>"
-				.  "<td align='right'>" . $total_stats . "&nbsp;&nbsp </td></tr></table>";
-	} else {
-		$retval = '';
+        $siteStats[] = array($LANG_GUS_builtin_stats['users'], $total_stats);
+        
+        return $siteStats;    
 	}
-	
-	return $retval;
 }
+
 
 /**
 * This will put an option for stats in the command and control block on
