@@ -73,6 +73,8 @@ function GUS() {
 		// save our parsed url for path info later on
 		$_GUS_VARS['parsed_site_url'] = parse_url($_CONF['site_url']);
 		
+        $_GUS_VARS['remote_ip'] = '';
+        
 		if ($_GUS_VARS['capture'] == '1') {
 			// First check the IP...
 			$_GUS_VARS['remote_ip'] = GetIP($_SERVER['REMOTE_ADDR']);
@@ -1122,7 +1124,7 @@ function phpblock_gusstats() {
 			}
 		}
 		
-		if (is_array($ref)) {
+		if (isset($ref) && is_array($ref)) {
 			arsort($ref);
 			$i = 0;
 			
