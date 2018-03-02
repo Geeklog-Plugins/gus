@@ -1206,6 +1206,7 @@ function plugin_getBlocks_gus($side, $topic='')
                                   'blockorder'     => $_GUS_CONF['block_order'],
                                   'content'        => $display,
                                   'allow_autotags' => false,
+                                  'convert_newlines' => false,
                                   'help'           => '');
             }
         }
