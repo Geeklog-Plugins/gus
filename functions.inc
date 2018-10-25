@@ -249,7 +249,7 @@ function ip_to_hostname($ip) {
  * @return string    plugin version
 */
 function plugin_chkVersion_gus() {
-	return '1.7.5';
+	return '1.7.6';
 }
 
 // Add the CSS file if we are browsing a GUS page
@@ -523,10 +523,15 @@ function GUS_doUpgrades($current_gus_version) {
             
 				$current_gus_version = '1.7.5';
 				break;                
+
+			case '1.7.5':
+            
+				$current_gus_version = '1.7.6';
+				break;                
 				
 			default:
 				$done = TRUE;
-				break;
+				break;                
 		}
 	}
 
@@ -612,133 +617,23 @@ function GUS_getEncodedURL($url) {
 /*
 * Return an array with Browser type and Version
 */
-function GUS_getBrowser($UA) {
-	$browser = array();
-	
-	if (@preg_match("@opera[ /]([0-9]{1,2}.[0-9]{1,3}){0,1}@i", $UA, $match)) {
-		$browser['type'] = 'Opera'; 
-		$browser['ver']  = $match[1];
-	} else if (preg_match("@konqueror/([\.\+[:digit:]]+)@i", $UA, $match)) {
-		$browser['type'] = 'Konqueror'; 
-		$browser['ver']  = $match[1];
-	} else if (preg_match("@lynx/([\.\+[:digit:]]+)@i", $UA, $match)) {
-		$browser['type'] = 'Lynx'; 
-		$browser['ver']  = $match[1];
-	} else if (preg_match("@links \(([0-9]{1,2}.[0-9]{1,3})@i", $UA, $match)) {
-		$browser['type'] = 'Links'; 
-		$browser['ver']  = $match[1];
-	} else if (preg_match("@(Safari|Camino|Firefox|Firebird)/([\.\+[:digit:]]+)@i", $UA, $match)) {
-		$browser['type'] = $match[1]; 
-		$browser['ver']  = $match[2];
-	} else if (preg_match("@msie ([\.\+[:digit:]]+)@i", $UA, $match)) {
-		$browser['type'] = 'MSIE'; 
-		$browser['ver']  = $match[1];
-	} else if (preg_match("@^Mozilla/5.0 \(compatible; Yahoo\! Slurp;@i", $UA)) {
-		$browser['type'] = 'Yahoo! Slurp';
-		$browser['ver']  = '1.0';        
-	} else if (preg_match("@netscape6/(6.[0-9]{1,3})@i", $UA, $match)) {
-		$browser['type'] = 'Netscape';
-		$browser['ver']  = $match[1];
-	} else if (preg_match("@netscape/(7.[0-9]{1,3})@i", $UA, $match)) {
-		$browser['type'] = 'Netscape'; 
-		$browser['ver']  = $match[1];
-	} else if (preg_match("@^mozilla/5.+ rv:([^\)]+)\)@i", $UA, $match)) {
-		$browser['type'] = 'Mozilla';
-		$browser['ver']  = $match[1];
-	} else if (preg_match("@^mozilla/([\.\+[:digit:]]+)@i", $UA, $match)) {
-		$browser['type'] = 'Netscape';
-		$browser['ver']  = $match[1];
-	} else if (preg_match("@^Jigsaw/([^ ]+)@i", $UA, $match)) {
-		$browser['type'] = 'W3C CSS Validator';
-		$browser['ver']  = $match[1];
-	} else if (stripos($UA, 'w3m') !== FALSE) {
-		$browser['type'] = 'w3m';
-		$browser['ver']  = 'Unknown';
-	} else if (preg_match("@^([^/]+)/([\.[:digit:]]+)@i", $UA, $match)) {
-		$browser['type'] = strtr($match[1], '_', ' '); 
-		$browser['ver']  = $match[2];
-	} else {
-		$browser['type'] = 'Unknown';
-		$browser['ver']  = 'Unknown';
-	}
-	
-	return $browser;
-}
+function GUS_getBrowser($UA)
+{
+    global $_CONF;
+    require_once $_CONF['path'].'plugins/gus/BrowserDetection.php';
 
-/*
-* Return Computer Type
-*/
-function GUS_getComputerType($UA) {
-	if (stripos($UA, 'linux') !== FALSE) {
-		$return = 'Linux';
-	} else if (stripos($UA, 'win32') !== FALSE) {
-		$return = 'Windows';
-	} else if (preg_match("@(win)([0-9]{2})@i", $UA, $match) OR
-			preg_match("@(windows) ([0-9]{2})@i", $UA, $match)) {
-		$return = "Windows {$match[2]}";
-	} else if (preg_match("@win ?9x@i", $UA)) {
-		$return = 'Windows 9x';
-	} else if (stripos($UA, 'Windows XP') !== FALSE) {
-		$return = 'Windows XP';
-	} else if (preg_match("@(winnt)([0-9]{1,2}.[0-9]{1,2}){0,1}@i", $UA, $match)) {
-		if ($match[2] === '5.1') {
-			$return = 'Windows XP';
-		} else if ($match[2] === '5.0') {
-			$return = 'Windows 2000';
-		} else if ($match[2] === '5.2') {
-			$return = 'Windows 2003';
-		} else if ($match[2] === '6.0') {
-			$return = 'Windows Vista';
-		} else {
-			$return = "Windows NT {$match[2]}";
-		}
-	} else if (preg_match("@(windows nt) {0,1}([0-9]{1,2}.[0-9]{1,2}){0,1}@i", $UA, $match)) {
-		if ($match[2] === '5.1') {
-			$return = 'Windows XP';
-		} else if ($match[2] === '5.0') {
-			$return = 'Windows 2000';
-		} else if ($match[2] === '5.2') {
-			$return = 'Windows 2003';
-		} else if ($match[2] === '6.0') {
-			$return = 'Windows Vista';
-		} else {
-			$return = "Windows NT {$match[2]}";
-		}
-	} else if (preg_match("@mac os x@i", $UA)) {
-		$return = 'Mac OS X';
-	} else if (stripos($UA, 'mac') !== FALSE) {
-		$return = 'MacOS';
-	} else if (stripos($UA, 'darwin') !== FALSE) {
-		$return = 'Darwin';
-	} else if (preg_match("@(sunos) ([0-9]{1,2}.[0-9]{1,2}){0,1}@i", $UA, $match)) {
-		$return = "SunOS {$match[2]}";
-	} else if (preg_match("@(beos) r([0-9]{1,2}.[0-9]{1,2}){0,1}@i", $UA, $match)) {
-		$return = "BeOS {$match[2]}";
-	} else if (stripos($UA, 'freebsd') !== FALSE) {
-		$return = 'FreeBSD';
-	} else if (stripos($UA, 'openbsd') !== FALSE) {
-		$return = 'OpenBSD';
-	} else if (stripos($UA, 'irix') !== FALSE) {
-		$return = 'IRIX';
-	} else if (stripos($UA, 'os/2') !== FALSE) {
-		$return = 'OS/2';
-	} else if (stripos($UA, 'plan9') !== FALSE) {
-		$return = 'Plan9';
-	} else if ((stripos($UA, 'unix') !== FALSE) OR (stripos($UA, 'hp-ux') !== FALSE)) {
-		$return = 'Unix';
-	} else if (stripos($UA, 'osf') !== FALSE) {
-		$return = 'OSF';
-	} else if (stripos($UA, 'Symbian') !== FALSE) {
-		$return = 'SymbianOS';
-	} else if (stripos($UA, 'WebTV') !== FALSE) {
-		$return = 'WebTV';
-	} else if (preg_match("@(bot|Slurp|larbin|Jeeves|Spider)@i", $UA)) {
-		$return = '[Robot]';
-	} else {
-		$return = 'Unknown';
-	}
-		  
-	return $return;
+    $b = new BrowserDetection();
+
+    $browser = array();
+
+    $browser['type'] = $b->getName();
+    $browser['ver'] = $b->getVersion();
+    $browser['platform'] = $b->getPlatformVersion();
+    if ( $browser['platform'] == 'unknown' ) {
+        $browser['platform'] = $b->getPlatform();
+    }
+
+    return $browser;
 }
 
 /*
@@ -761,14 +656,13 @@ function GUS_addStats($page, $user_id, $user_name, $host_name, $user_agent) {
         if ($row = DB_fetchArray($res)) {
             $ua_id = $row[0];
         } else {        
-            $browser  = GUS_getBrowser($_SERVER['HTTP_USER_AGENT']);
-            $platform = GUS_getComputerType($_SERVER['HTTP_USER_AGENT']);
+            $browser  = GUS_getBrowser( $_SERVER['HTTP_USER_AGENT'] );
 
             $sql = "INSERT INTO {$_TABLES['gus_user_agents']} SET
-                user_agent = '{$user_agent}',
-                browser = '" . $browser['type'] . "',
-                version = '" . $browser['ver'] . "',
-                platform = '" . $platform . "'";
+                user_agent = '". DB_escapeString($user_agent) . "',
+                browser = '" . DB_escapeString($browser['type']) . "',
+                version = '" . DB_escapeString($browser['ver']) . "',
+                platform = '" . DB_escapeString($browser['platform']) . "'";            
 
             $res = DB_query($sql);
             $ua_id = DB_insertId();
