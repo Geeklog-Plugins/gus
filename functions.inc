@@ -664,7 +664,7 @@ function GUS_addStats($page, $user_id, $user_name, $host_name, $user_agent) {
                 version = '" . DB_escapeString($browser['ver']) . "',
                 platform = '" . DB_escapeString($browser['platform']) . "'";            
 
-            $res = DB_query($sql);
+            $res = DB_query($sql, 1); // 1 = suppress error messages
             $ua_id = DB_insertId();
         }
         DB_unlockTable($_TABLES['gus_user_agents']);
