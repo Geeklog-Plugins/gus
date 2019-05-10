@@ -692,6 +692,9 @@ function GUS_addStats($page, $user_id, $user_name, $host_name, $user_agent) {
 	if (isset($_SERVER['HTTP_REFERER']) AND ($_SERVER['HTTP_REFERER'] !== '')) {
 		$referrer = urlencode(addslashes($_SERVER['HTTP_REFERER']));
 	}
+    
+    // Older Geeklog usernames and remote usernames may contain punctuation in username.
+    $user_name = addslashes($user_name);
 	
 	$sql = "INSERT INTO " . $_TABLES['gus_userstats'] . " SET"
 		. " uid='" . $user_id
