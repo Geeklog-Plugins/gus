@@ -44,6 +44,7 @@ $LANG_GUS00 = array (
     'new_comments'  => 'Nya kommentarer',
     'comment_title' => 'Kommentarstitel',
     'datetime'      => 'Datum/Tid',
+    'time'            > 'Tid',
     'countries'     => 'Länder',
     'code'          => 'Kod',
     'referer'       => 'Hänvisning',

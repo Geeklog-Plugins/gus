@@ -44,6 +44,7 @@ $LANG_GUS00 = array (
     'new_comments'  => 'Nieuwe Reacties',
     'comment_title' => 'Reactie Titel',
     'datetime'      => 'Datum/Tijd',
+	'time'          => 'Tijd',
     'countries'     => 'Landen',
     'code'          => 'Code',
     'referer'       => 'Referrer',

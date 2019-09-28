@@ -146,7 +146,7 @@ if (function_exists('BAN_for_plugins_check_access') AND BAN_for_plugins_check_ac
 			  .  '</form></td>';
 	}
 } else {
-	$data .= '<td colspan=2>[A compatible version of the <a href="http://code.google.com/p/geeklog/" target="_blank">ban plugin</a> is not installed or you do not have access]</td>';
+	$data .= '<td colspan=2>[A compatible version of the <a href="https://github.com/Geeklog-Plugins/ban" target="_blank">ban plugin</a> is not installed or you do not have access]</td>';
 }
 
 $data .= '</tr></table></td><tr><td>';
