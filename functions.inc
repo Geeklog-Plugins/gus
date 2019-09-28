@@ -764,7 +764,7 @@ function GUS_log_and_execute($sql) {
 * @return   string  formatted html for block
 */
 function phpblock_gusstats() {
-	global $_USER, $_CONF, $_TABLES, $LANG01, $LANG_GUS_wo, $_GUS_CONF;
+	global $_USER, $_CONF, $_TABLES, $LANG01, $LANG_GUS_wo, $_GUS_CONF, $_GUS_VARS;
 	
 	// Code borrowed from lib-common.php
 	if (empty($_USER['uid']) OR ($_USER['uid'] == 1)) {
