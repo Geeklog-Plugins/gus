@@ -147,7 +147,7 @@ function GUS() {
 			}
 			
 			// check user agent
-			$user_agent = addslashes(substr($_SERVER['HTTP_USER_AGENT'], 0, 128));
+			$user_agent = DB_escapeString(substr($_SERVER['HTTP_USER_AGENT'], 0, 128));
 			$rec = DB_query("SELECT COUNT(*) AS ignored
 								FROM {$_TABLES['gus_ignore_ua']}
 								WHERE '{$user_agent}' LIKE ua
@@ -161,7 +161,7 @@ function GUS() {
 			// check the referrer
 			if (isset($_SERVER['HTTP_REFERER']) AND ($_SERVER['HTTP_REFERER'] != '')) {
 				//$referrer = $_SERVER['HTTP_REFERER'];
-                $referrer = urlencode(addslashes($_SERVER['HTTP_REFERER']));
+                $referrer = urlencode(DB_escapeString($_SERVER['HTTP_REFERER']));
                 
 				$rec = DB_query("SELECT COUNT(*) AS ignored
 									FROM {$_TABLES['gus_ignore_referrer']}
@@ -694,7 +694,7 @@ function GUS_addStats($page, $user_id, $user_name, $host_name, $user_agent) {
 	}
     
     // Older Geeklog usernames and remote usernames may contain punctuation in username.
-    $user_name = addslashes($user_name);
+    $user_name = DB_escapeString($user_name);
 	
 	$sql = "INSERT INTO " . $_TABLES['gus_userstats'] . " SET"
 		. " uid='" . $user_id

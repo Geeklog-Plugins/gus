@@ -382,7 +382,7 @@ if ($action === 'capture_on') {
 		$table = $_TABLES['gus_ignore_ua'];
 		$field = 'ua';
 		//$data  = substr(trim($newuseragent), 0, 128);
-        $data  = addslashes(substr(trim($newuseragent), 0, 128));
+        $data  = DB_escapeString(substr(trim($newuseragent), 0, 128));
 	} else if ($newhost != '') {
 		$table = $_TABLES['gus_ignore_host'];
 		$field = 'host';
@@ -391,10 +391,10 @@ if ($action === 'capture_on') {
 		$table = $_TABLES['gus_ignore_referrer'];
 		$field = 'referrer';
 		//$data  = substr(trim( $newreferrer), 0, 128);
-        $data  = urlencode(addslashes(substr(trim( $newreferrer), 0, 128)));
+        $data  = urlencode(DB_escapeString(substr(trim( $newreferrer), 0, 128)));
 	}
 	
-	$data = addslashes($data);
+	$data = DB_escapeString($data);
 	
 	if ($action === $LANG_GUS_admin['add']) {
 		DB_query("INSERT INTO {$table} VALUES ('{$data}')", 1);
