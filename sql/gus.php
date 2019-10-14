@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS {$_TABLES['gus_vars']} (
 $_DATA = array();
 
 // By DEFAULT ignore current IP
-$_DATA[] = "INSERT IGNORE INTO {$_TABLES['gus_ignore_ip']} VALUES ('" . $_GUS_VARS['remote_ip'] . "')";
+$_DATA[] = "INSERT IGNORE INTO {$_TABLES['gus_ignore_ip']} VALUES ('" . @$_SERVER['REMOTE_ADDR'] . "')";
 
 // By DEFAULT ignore current user
 $_DATA[] = "INSERT IGNORE INTO {$_TABLES['gus_ignore_user']} VALUES ('" . $_USER['username'] . "')";

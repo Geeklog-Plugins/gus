@@ -105,7 +105,7 @@ function plugin_install_gus() {
 	
 	// ON DUPLICATE KEY UPDATE only exists on MySQL >= 4.1
 	//	See: http://dev.mysql.com/doc/mysql/en/insert.html
-	if ($_GUS_VARS['sql_version']['major'] >= 4 && $_GUS_VARS['sql_version']['minor'] >= 1) {
+	if (isset($_GUS_VARS['sql_version']) && ($_GUS_VARS['sql_version']['major'] >= 4) && ($_GUS_VARS['sql_version']['minor'] >= 1)) {
 		$sql .= " ON DUPLICATE KEY UPDATE value={$group_id} ";
 	}
 	
