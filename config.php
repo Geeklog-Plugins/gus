@@ -29,6 +29,8 @@
 // +---------------------------------------------------------------------------+
 //
 
+global $_DB_table_prefix;
+
 // For Removing Stats Data
 $_GUS_CONF['keep_stats_default'] = 30; // In days
 

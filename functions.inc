@@ -49,8 +49,12 @@ require_once $_CONF['path'] . 'plugins/gus/config.php';
 GUS();
 
 function GUS() {
-	global $_GUS_VARS, $_GUS_CONF, $_USER, $_TABLES, $_CONF;
-	
+	global $_GUS_VARS, $_GUS_CONF, $_USER, $_TABLES, $_CONF, $_PLUGINS;
+
+	if (!in_array('gus', $_PLUGINS)) {
+		return;
+	}
+
 	$_GUS_VARS = array();
 	$rec = DB_query("SELECT * FROM {$_TABLES['gus_vars']}", 1);
 	
