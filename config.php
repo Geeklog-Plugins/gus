@@ -47,10 +47,16 @@ $_GUS_CONF['block_permissions'] = array (2, 2, 0, 0); // 0 = No Access, 2 = Read
 // If your system is set up such that you cannot execute shell commands, use 'gethostbyaddr'.
 // Setting to an empty string '' disables host lookup
 // Works only with IPv4 addresses (not IPv6)
+// If you change this setting and enable hosts and host_lookup_once_per_ip is also set to true then you should delete the gus data and start fresh or any existing hostnames will just contain the IP
 $_GUS_CONF['host_lookup'] = 'gethostbyaddr';
 
 // sets the timeout for host name lookup using 'host' or 'nslookup' [minimum 1 second]
 $_GUS_CONF['host_lookup_timeout'] = 1;
+
+// Sets if the host lookup happens each time based on the host_lookup config or it only happens the first time and then it is retrieved from the DB
+// This could potentially create IPs with incorrect hosts if they happen to change the host name for the IP before you delete all GUS stats
+// Also some IPs may have multiple host names, If this is the case only the first one returned will ever be used 
+$_GUS_CONF['host_lookup_once_per_ip'] = true;
 
 // Set this to FALSE if you know you cannot use temporary tables in your MySQL setup.
 // If you aren't sure, then leave it set to TRUE - everything will still work properly.

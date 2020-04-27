@@ -204,8 +204,32 @@ function GetIP($ip) {
 
 // adapted from code found here: http://www.php.net/gethostbyaddr
 function ip_to_hostname($ip) {
-	global $_GUS_CONF;
-	
+	global $_GUS_CONF, $_GUS_VARS, $_TABLES;
+
+	// Check if we already found host before, if so use it
+	if ($_GUS_CONF['host_lookup_once_per_ip']) {
+		switch ($_GUS_CONF['host_lookup']) {
+			case 'host':
+			case 'nslookup':
+			case 'gethostbyaddr':
+				// Host is set to IP if host_lookup is disabled so lets filter these out
+				$sql = "SELECT host FROM {$_TABLES['gus_userstats']} "
+					. "WHERE host <> ip AND ip = '" . $_GUS_VARS['remote_ip'] . "' "
+					. "LIMIT 1";
+				$result = DB_query($sql);
+				$A = DB_fetchArray($result);		
+				if (!empty($A['host'])) {
+					return $A['host'];
+				}
+				
+				break;
+				
+			default:
+				break;
+		}
+	}
+
+	// Find host by using ...
 	switch ($_GUS_CONF['host_lookup']) {
 		case 'host':
 			$timeout = $_GUS_CONF['host_lookup_timeout'];
@@ -230,9 +254,9 @@ function ip_to_hostname($ip) {
 		case 'gethostbyaddr':
 			return @gethostbyaddr($ip);
 			break;
-            
+			
 		case '':
-            // Host Lookup disabled
+			// Host Lookup disabled
 			break;
 			
 		default:
@@ -624,9 +648,10 @@ function GUS_getEncodedURL($url) {
 function GUS_getBrowser($UA)
 {
     global $_CONF;
+
     require_once $_CONF['path'].'plugins/gus/BrowserDetection.php';
 
-    $b = new BrowserDetection();
+	$b = new Wolfcast\BrowserDetection();
 
     $browser = array();
 
@@ -769,24 +794,9 @@ function GUS_log_and_execute($sql) {
 */
 function phpblock_gusstats() {
 	global $_USER, $_CONF, $_TABLES, $LANG01, $LANG_GUS_wo, $_GUS_CONF, $_GUS_VARS;
-	
-	// Code borrowed from lib-common.php
-	if (empty($_USER['uid']) OR ($_USER['uid'] == 1)) {
-		// The following code handles anonymous users so they show up properly
-		DB_query("DELETE FROM {$_TABLES['sessions']} WHERE remote_ip = '{$_SERVER['REMOTE_ADDR']}' AND uid = 1");
-		// Build a useless sess_id (needed for insert to work properly)
-		mt_srand(microtime(TRUE) * 1000000);
-		$sess_id = mt_rand();
-		$curtime = time();
-		
-		// Insert anonymous user session
-		DB_query("INSERT INTO {$_TABLES['sessions']} (sess_id, start_time, remote_ip, uid)
-					VALUES ($sess_id,$curtime,'{$_SERVER['REMOTE_ADDR']}',1)");
-	}
 
-	$expire_time = time() - $_CONF['whosonline_threshold'];
-   
 	// Clear out any expired sessions
+	$expire_time = time() - $_CONF['whosonline_threshold'];
 	DB_query("DELETE FROM {$_TABLES['sessions']} WHERE uid = 1 AND start_time < " . $expire_time);
 
 	// Code adapted from whose online block
