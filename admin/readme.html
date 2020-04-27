@@ -26,10 +26,10 @@
 </head>
 <body bgcolor="#ffffff">
 
-<h2>Geeklog Usage Stats Plugin [v1.7.5]</h2>
+<h2>Geeklog Usage Stats Plugin [v1.7.6.1]</h2>
 <p>Developer Website: <a href="https://github.com/Geeklog-Plugins/gus" target="_blank">GUS Plugin Repository</a><br>
-Current Maintainers: <a href="https://github.com/orgs/Geeklog-Plugins/people" target="_blank">Geeklog Community Members</a><br>
-Released: ???, 2018</p>
+Current Maintainers: <a href="https://github.com/Geeklog-Plugins/gus/graphs/contributors" target="_blank">Geeklog Community Members</a><br>
+Released: 28 Apr, 2020</p>
 
 <h3>Table of Contents</h3>
 
@@ -89,7 +89,18 @@ How about the price of a <b>pizza</b> or even just <b>a beer</b>?  Check out the
 
 <a name="version"></a><h3>Version History</h3>
 <ul>
-	<li>v1.7.5 [??? 2018]<ul> 
+	<li>v1.7.6.1 [28 Apr 2020]<ul> 
+		<li><span class="new">[new]</span> Now can set gus to only look up IP once. After that it will always use the hostname found in the database user stats records.</li>
+		<li><span class="new">[new]</span> Updated BrowserDetection Class to v2.9.5</li>
+	</ul></li>
+	<li>v1.7.6 [16 Dec 2019]<ul> 
+		<li><span class="new">[new]</span> Improvements to support newer Geeklog functions and API</li>
+		<li><span class="fix">[fix]</span> Fixed enabling Gus plugin issue</li>
+        <li><span class="fix">[fix]</span> Fixes to support PHP v7.3</li>
+		<li><span class="fix">[fix]</span> Fixed undeclared variables issues</li>
+		<li><span class="fix">[fix]</span> Fixed Gus issues with User Names that had a quote in them</li>
+	</ul></li>
+	<li>v1.7.5 [7 Jun 2018]<ul> 
 		<li><span class="new">[new]</span> Config option host_lookup can now be disabled</li>
 		<li><span class="new">[new]</span> Supports Geeklog v2.2.0 (Replaced functions Com_SiteHeader and COM_SiteFooter with COM_createHTMLDocument)</li>
         <li><span class="new">[new]</span> Added support of removing GUS Cache via Geeklog Clear Cache Function (Geeklog v2.2.0+ only)</li>

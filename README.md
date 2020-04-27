@@ -1,24 +1,30 @@
-# Geeklog Usage Statistics plugin (GUS) - version 1.7.5
+# Geeklog Usage Statistics plugin (GUS)
 
-* Current Maintainers: [Geeklog Community Members](https://github.com/orgs/Geeklog-Plugins/people)
-* Release Date: 2018-06-07
+* Maintainers: [Geeklog Community Members](https://github.com/Geeklog-Plugins/gus/graphs/contributors)
+* Latest Release Supports: Geeklog v2.1.0 or higher
 
-**Requires minimum Geeklog version 2.1.0 and MySQL 4.1+**
-
-* Features
-* Changelog
-* Installing
-* Upgrading
-* Configuration
-* Profile Integration
-
-## Summary of features
+## Summary
 
 The Geeklog Usage Stats [GUS] plugin collects statistics on who visits your site, what browser and operating system they are using, which pages they view, and which links they are clicking to get there.  It allows the administrator to browse these stats through a series of tables, getting right down into the data.  It is based on the venerable Stats plugin v1.3 by Tom Willett and John Hughes.
 
+## Main Features
+
+- Collect a wealth of statistics on your visitors including users and bots
+- Can setup ignore lists for Users, Pages, Host Names, IP Addresses, User Agents, and Referrers
+- Enhanced Who's Online Block for Admins
+
+## Other Information
+
 For more information on this plugin and how to install it please read gus/admin/readme.html found in the install file.
 
+Geeklog Homepage:
+https://www.geeklog.net
 
------
+GUS Plugin Homepage:
+https://github.com/Geeklog-Plugins/gus
 
-* v1.7.4 - Release Date: March 8, 2017
+To find the latest releases see:
+https://github.com/Geeklog-Plugins/gus/releases
+
+To request a feature or report an issue see: 
+https://github.com/Geeklog-Plugins/gus/issues
