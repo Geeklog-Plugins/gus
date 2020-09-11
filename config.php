@@ -79,9 +79,9 @@ $_GUS_CONF['hide_in_day_summary'] = array(
 	//	, 'http://images.google.'		// hide all images.google.* referrers
 		 );
 
-// This the URL for the Whois lookup. This uses www.whois.sc
+// This the URL for the Whois lookup. This uses https://www.domaintools.com/
 // If you have an alternate source of this information supply it here.
-$_GUS_Whois_URL_start = '<a href="http://www.whois.sc/';
+$_GUS_Whois_URL_start = '<a href="https://whois.domaintools.com/'; 
 $_GUS_Whois_URL_end = '" target="_blank">';
 
 // The icon to use for the GUS pages - located in the public_html/gus/images/ directory
