@@ -851,12 +851,26 @@ function phpblock_gusstats() {
 			$retval = ($num_reg > 0) ? $LANG01[112] . ': ' . $num_reg . '<br>' : '';
 		}
 		
-		$result = DB_query("SELECT DISTINCT uid, remote_ip
-								FROM {$_TABLES['sessions']}
-								WHERE uid = 1");
+		if (COM_versionCompare(VERSION, '2.2.2', '>=')) {
+			$result = DB_query("SELECT DISTINCT s.uid, i.ipaddress
+									FROM {$_TABLES['sessions']} AS s
+									LEFT JOIN {$_TABLES['ip_addresses']} AS i
+									ON s.seq = i.seq
+									WHERE s.uid = 1");
+		} else {
+			$result = DB_query("SELECT DISTINCT uid, remote_ip
+									FROM {$_TABLES['sessions']}
+									WHERE uid = 1");
+		}
 	} else {
-		$result = DB_query("SELECT DISTINCT uid, remote_ip 
-								FROM {$_TABLES['sessions']}");
+		if (COM_versionCompare(VERSION, '2.2.2', '>=')) {
+			$result = DB_query("SELECT DISTINCT s.uid, i.ipaddress 
+									FROM {$_TABLES['sessions']} AS s 
+									LEFT JOIN {$_TABLES['ip_addresses']} AS i ");
+		} else {
+			$result = DB_query("SELECT DISTINCT uid, remote_ip 
+									FROM {$_TABLES['sessions']}");
+		}
 	}
 
 	$num_anon += DB_numRows($result);
