@@ -811,11 +811,12 @@ function phpblock_gusstats() {
 	$retval   = '';
 	
 	if ($_GUS_CONF['wo_online']) {
+		$uTable = COM_versionCompare(VERSION, '2.2.2', '>=') ? $_TABLES['user_attributes'] : $_TABLES['userprefs'];
 		$result = DB_query("SELECT DISTINCT {$_TABLES['sessions']}.uid, {$byname}, photo, showonline
-				FROM {$_TABLES['sessions']},{$_TABLES['users']},{$_TABLES['userprefs']}
+				FROM {$_TABLES['sessions']},{$_TABLES['users']},{$uTable}
 				WHERE {$_TABLES['sessions']}.uid <> 1
 					AND {$_TABLES['users']}.uid = {$_TABLES['sessions']}.uid
-					AND {$_TABLES['users']}.uid = {$_TABLES['userprefs']}.uid
+					AND {$_TABLES['users']}.uid = {$uTable}.uid
 					AND start_time >= $expire_time 
 				ORDER BY {$byname}");
 
