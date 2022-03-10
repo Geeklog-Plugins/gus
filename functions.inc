@@ -277,7 +277,7 @@ function ip_to_hostname($ip) {
  * @return string    plugin version
 */
 function plugin_chkVersion_gus() {
-	return '1.7.6.1';
+	return '1.7.6.2';
 }
 
 // Add the CSS file if we are browsing a GUS page
@@ -560,6 +560,11 @@ function GUS_doUpgrades($current_gus_version) {
 			case '1.7.6':
             
 				$current_gus_version = '1.7.6.1';
+				break;                
+				
+			case '1.7.6.1':
+            
+				$current_gus_version = '1.7.6.2';
 				break;                
 				
 			default:
