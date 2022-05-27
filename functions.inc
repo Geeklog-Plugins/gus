@@ -722,8 +722,10 @@ function GUS_addStats($page, $user_id, $user_name, $host_name, $user_agent) {
 		}
 	}
 
-	if ($query_string !== '') {
+	if ($query_string !== null) {
 		$query_string = urlencode(addslashes($query_string));
+	} else {
+		$query_string = '';
 	}
 
 	$referrer = '';
