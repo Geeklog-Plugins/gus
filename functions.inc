@@ -888,28 +888,30 @@ function phpblock_gusstats() {
 		$bot_list = array();
 		
 		while ($row = DB_fetchArray($result, FALSE)) {
-			$ip = $row['remote_ip'];
-			
-			if (preg_match("@^216\.239\.46|^64\.68\.8|^66\.249\.(6[4-9]|[78]\d?|9[0-5])@", $ip)) {
-				$bot_list[] = 'Google';
-				$num_anon--;
-			} else if (preg_match("@^68\.142\.(19[2-9]|2[01234]\d?|25[012345])|
-						^66\.94\.(22[4-9]|2[3-4]\d?|25[0-5])|
-						^216\.109\.(11[2-9]|12[0-7])|
-						^206\.190\.(3[2-9]|[4-5]\d?|6[0-3])@", $ip)) {
-				$bot_list[] = 'Yahoo!';
-				$num_anon--;
-			} else if (preg_match("@^65\.(19[2-9]|2[0-1]\d?|22[0-3])@", $ip)) {
-				$bot_list[] = 'Ask Jeeves';
-				$num_anon--;
-			} else if (preg_match("@^72\.30\.|
-						^68\.142\.(19[2-9]|2[0-5]\d?)|
-						^66\.196\.(6[4-9]|[789]\d?|1[0-1]\d?|12[0-7])@", $ip)) {
-				$bot_list[] = 'Inktomi';
-				$num_anon--;
-			} else if (preg_match("@^64.4.8.9[3-4]|^64.4.8.11[3-7]|^65.5[2-5]\.@", $ip)) {
-				$bot_list[] = 'MSN Bot';
-				$num_anon--;
+			if (isset($row['remote_ip'])) {
+				$ip = $row['remote_ip'];
+				
+				if (preg_match("@^216\.239\.46|^64\.68\.8|^66\.249\.(6[4-9]|[78]\d?|9[0-5])@", $ip)) {
+					$bot_list[] = 'Google';
+					$num_anon--;
+				} else if (preg_match("@^68\.142\.(19[2-9]|2[01234]\d?|25[012345])|
+							^66\.94\.(22[4-9]|2[3-4]\d?|25[0-5])|
+							^216\.109\.(11[2-9]|12[0-7])|
+							^206\.190\.(3[2-9]|[4-5]\d?|6[0-3])@", $ip)) {
+					$bot_list[] = 'Yahoo!';
+					$num_anon--;
+				} else if (preg_match("@^65\.(19[2-9]|2[0-1]\d?|22[0-3])@", $ip)) {
+					$bot_list[] = 'Ask Jeeves';
+					$num_anon--;
+				} else if (preg_match("@^72\.30\.|
+							^68\.142\.(19[2-9]|2[0-5]\d?)|
+							^66\.196\.(6[4-9]|[789]\d?|1[0-1]\d?|12[0-7])@", $ip)) {
+					$bot_list[] = 'Inktomi';
+					$num_anon--;
+				} else if (preg_match("@^64.4.8.9[3-4]|^64.4.8.11[3-7]|^65.5[2-5]\.@", $ip)) {
+					$bot_list[] = 'MSN Bot';
+					$num_anon--;
+				}
 			}
 		}
 		
