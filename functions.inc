@@ -40,6 +40,8 @@ if (file_exists($langfile)) {
 	require_once $_CONF['path'] . 'plugins/gus/language/english.php';
 }
 
+global $_GUS_CONF;
+
 require_once $_CONF['path'] . 'plugins/gus/config.php';
 
 ///////////////////////////////////////////////////////////////////
