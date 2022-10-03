@@ -30,7 +30,7 @@
 require_once( '../lib-common.php' );
 
 function GUS_HasAccess($allow_anon = TRUE) {
-	global $_GUS_anon_access, $LANG_GUS00, $_USER;
+	global $_GUS_anon_access, $LANG_GUS00, $_USER, $MESSAGE;
 	
 	if (($allow_anon AND ($_GUS_anon_access == 1)) OR SEC_hasRights('gus.view' )) {
 		return TRUE;
@@ -39,11 +39,16 @@ function GUS_HasAccess($allow_anon = TRUE) {
 	COM_accessLog("Someone has tried to illegally access a GUS stats page.  "
 		. "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
 
+	// Lets do a 404 error to hide access to gus better from bad bots and search engines
+	COM_handle404();
+	
+	/*
     $display = COM_createHTMLDocument(
         COM_showMessageText($LANG_GUS00['access_denied_msg'], $MESSAGE[30]),
         array('pagetitle' => $MESSAGE[30])
     );
     COM_output($display);
+	*/
 
 	return FALSE;
 }
