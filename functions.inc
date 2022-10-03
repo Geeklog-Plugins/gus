@@ -1060,7 +1060,11 @@ function phpblock_gusstats() {
 				$host = preg_replace('/^www\./', '', $url['host'], 1);
 				
 				if (($host != '') AND ($host !== $_GUS_VARS['parsed_site_url']['host'])) {
-					$ref[$host] += 1;
+					if (isset($ref) && is_array($ref)) {
+						$ref[$host] += 1;
+					} else {
+						$ref[$host] = 1;
+					}
 					$refurl[$host] = htmlentities(preg_replace('/admin\/plugins.*$/', '', $referrer, 1));
 				}
 			}
