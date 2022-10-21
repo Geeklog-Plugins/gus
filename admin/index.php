@@ -393,13 +393,15 @@ if ($action === 'capture_on') {
 		//$data  = substr(trim( $newreferrer), 0, 128);
         $data  = urlencode(DB_escapeString(substr(trim( $newreferrer), 0, 128)));
 	}
-	
-	$data = DB_escapeString($data);
-	
-	if ($action === $LANG_GUS_admin['add']) {
-		DB_query("INSERT INTO {$table} VALUES ('{$data}')", 1);
-	} else {
-		DB_query("DELETE FROM {$table} WHERE {$field}='{$data}'", 1);
+
+	if (isset($data)) { // make sure data exists
+		$data = DB_escapeString($data);
+		
+		if ($action === $LANG_GUS_admin['add']) {
+			DB_query("INSERT INTO {$table} VALUES ('{$data}')", 1);
+		} else {
+			DB_query("DELETE FROM {$table} WHERE {$field}='{$data}'", 1);
+		}
 	}
 } else if ($action === 'clean_user') {
 	// clean_user
